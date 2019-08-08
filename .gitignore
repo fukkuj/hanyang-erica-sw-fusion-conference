@@ -1,0 +1,9 @@
+__pycache__/
+.ipynb_checkpoints/
+server/__pycache__/
+helper/.ipynb_checkpoints/
+ai/__pycache__/
+ai/.ipynb_checkpoints/
+ai/ckpts/
+ai/data
+ai/data/
