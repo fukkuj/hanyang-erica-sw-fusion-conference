@@ -20,7 +20,7 @@ typedef cv::Point3_<uint8_t> Pixel;
  * @handle NodeHandle object in ros platform
  */
 UsbCamera::UsbCamera(ros::NodeHandle& handle)
-	: nh(handle), stop(false), cap(NULL), isReady(true)
+	: nh(handle), stop(false), cap1(NULL), cap2(NULL), isReady(true)
 {
 
 }

@@ -47,13 +47,13 @@ private:
 	ros::NodeHandle nh;							// to create ros functionality
 	ros::Publisher pub;							// to send message/image to other node.
 	ros::ServiceServer cam_done_serv_server;	// to receive ready message
-	cv::VideoCapture* cap1, cap2;				// camera objects
+	cv::VideoCapture *cap1, *cap2;				// camera objects
 	cv::Mat initial_frame1, initial_frame2;		// initial frames. this is used to detect whether a trash is really in the box.
 
 	bool readyService(std_srvs::SetBool::Request& req,
 			  std_srvs::SetBool::Response& res);
 	bool isValuableFrame(cv::Mat& frame);
-	void publish(cv::Mat& frame);
+	void publish(cv::Mat& frame1, cv::Mat& frame2);
 	void updateInitialFrame(cv::Mat& frame1, cv::Mat& frame2);
 };
 
