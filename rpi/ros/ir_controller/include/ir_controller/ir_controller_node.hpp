@@ -4,9 +4,9 @@
 #include <unistd.h>
 #include <signal.h>
 #include <cstring>
-#include "ros/ros.hpp"
+#include "ros/ros.h"
 #include "wiringPi.h"
-#include "libsonar/libSonar.hpp"
+#include "libsonar/libSonar.h"
 
 #define TRIGGER = {1, 2, 3, 4};
 #define ECHO = {5, 6, 7, 8};

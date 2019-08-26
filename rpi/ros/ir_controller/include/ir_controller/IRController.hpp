@@ -9,7 +9,7 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include "ros/ros.h"
-#include "libsonar/libSonar.hpp"
+#include "libsonar/libSonar.h"
 
 #define OUT
 

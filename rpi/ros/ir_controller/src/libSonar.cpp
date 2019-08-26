@@ -1,6 +1,6 @@
 #include <iostream>
 #include <wiringPi.h>
-#include "libSonar.h"
+#include "libsonar/libSonar.h"
 
 Sonar::Sonar(){}
 
