@@ -52,7 +52,7 @@ void IRController::send(double* dists)
     this->computePercentage(dists, OUT percentages);
 
     std::stringstream msg_buffer;
-    std::for_each(std::begin(percentages), std::end(percentages), [&msg_buffer](float elem) -> {
+    std::for_each(std::begin(percentages), std::end(percentages), [&msg_buffer](float elem) {
         msg_buffer << elem << " ";
     });
 
