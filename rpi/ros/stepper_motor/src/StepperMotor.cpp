@@ -5,6 +5,7 @@
 #include <thread>
 #include <vector>
 
+
 StepperMotor::StepperMotor(ros::NodeHandle _nh)
 	: nh(_nh), is_ready(true)
 {
@@ -39,22 +40,13 @@ void StepperMotor::MotorCallback(const std_msgs::Int32MultiArray::ConstPtr& ptr)
 		ROS_INFO("Motor dir: %d", data[1]);
 		ROS_INFO("Motor step: %d", data[2]);
 
-		if (data[0] == BOX_MOTOR) {
-			digitalWrite(BOX_MOTOR_ENABLE, HIGH);
-			GoStep(box_motor1, data[1], data[2]);
-			GoStep(box_motor2, data[1], data[2]);
+		if (data[0] == BOX_MOTOR)
+			moveBoxMotor(data[1], data[2]);
 
-			while (!this->is_ready);
-			digitalWrite(BOX_MOTOR_ENABLE, LOW);
-		}
-		else if (data[0] == SUPPORT_MOTOR) {
-			digitalWrite(SUPPORT_MOTOR_ENABLE, HIGH);
-			GoStep(support_motor1, 1-data[1], data[2]);
-			GoStep(support_motor2, data[1], data[2]);
+		else if (data[0] == SUPPORT_MOTOR)
+			moveSupportMotor(data[1], data[2]);
 
-			while (!this->is_ready);
-			digitalWrite(SUPPORT_MOTOR_ENABLE, LOW);
-		}
+		this->is_ready = true;
 
 		std_srvs::SetBool request;
 		request.request.data = true;
@@ -63,74 +55,80 @@ void StepperMotor::MotorCallback(const std_msgs::Int32MultiArray::ConstPtr& ptr)
 	}
 }
 
-void StepperMotor::GoStep(class MotorInfo const& info, int dir, int steps)
+void StepperMotor::moveBoxMotor(int dir, int step)
 {
-	int step = (dir == BACKWARD ? -steps : steps);
-	std::thread th(&StepperMotor::Step, this, info, step);
-	th.detach();
+	digitalWrite(BOX_MOTOR_ENABLE, HIGH);
+
+	if (dir == FORWARD)
+		digitalWrite(BOX_MOTOR_DIR, HIGH);
+	else
+		digitalWrite(BOX_MOTOR_DIR, LOW);
+
+	int motor_clock = this->initial_motor_clock;
+	int i = 0;
+
+	for (; i < step/2; i += 1) {
+		digitalWrite(BOX_MOTOR_CLK, HIGH);
+		delayMicroseconds(motor_clk);
+		digitalWrite(BOX_MOTOR_CLK, LOW);
+		delayMicroseconds(motor_clk);
+
+		motor_clock -= this->motor_speed_up;
+		if (motor_clock < this->min_motor_clock)
+			motor_clock = this->min_motor_clock;
+	}
+
+	for (; i < step; i += 1) {
+		digitalWrite(BOX_MOTOR_CLK, HIGH);
+		delayMicroseconds(motor_clk);
+		digitalWrite(BOX_MOTOR_CLK, LOW);
+		delayMicroseconds(motor_clk);
+
+		motor_clock += this->motor_speed_up;
+		if (motor_clock > this->initial_motor_clock)
+			motor_clock = this->initial_motor_clock;
+	}
+
+	digitalWrite(BOX_MOTOR_ENABLE, LOW);
 }
 
-void StepperMotor::Step(class MotorInfo const& info, int steps)
+void StepperMotor::moveSupportMotor(int dir, int step)
 {
-	int motor_dir = info.motor_dir;
-	int motor_clk = info.motor_clk;
-
-	if (steps > 0) {
-		digitalWrite(motor_dir, HIGH);
-		
-		int motor_clock = this->initial_motor_clock;
-
-		int i = 0;
-
-		for (; i < steps/2; i++) {
-			digitalWrite(motor_clk, HIGH);
-			delayMicroseconds(motor_clock);
-			digitalWrite(motor_clk, LOW);
-			delayMicroseconds(motor_clock);
-
-			//motor_clock -= this->motor_speed_up;
-			//if (motor_clock < this->min_motor_clock)
-			//	motor_clock = this->min_motor_clock;
-		}
-		for (; i < steps; i++) {
-			digitalWrite(motor_clk, HIGH);
-			delayMicroseconds(motor_clock);
-			digitalWrite(motor_clk, LOW);
-			delayMicroseconds(motor_clock);
-
-			//motor_clock += this->motor_speed_up;
-			//if (motor_clock > this->initial_motor_clock)
-			//	motor_clock = this->initial_motor_clock;
-		}
+	digitalWrite(SUPPORT_MOTOR_ENABLE, HIGH);
+	
+	if (dir == FORWARD) {
+		digitalWrite(SUPPORT_LEFT_MOTOR_DIR, LOW);
+		digitalWrite(SUPPORT_RIGHT_MOTOR_DIR, HIGH);
 	}
-	else if (steps < 0) {
-		digitalWrite(motor_dir, LOW);
-
-		int motor_clock = initial_motor_clock;
-
-		int i = 0;
-
-		for (; i < -steps/2; i++) {
-			digitalWrite(motor_clk, HIGH);
-			delayMicroseconds(motor_clock);
-			digitalWrite(motor_clk, LOW);
-			delayMicroseconds(motor_clock);
-
-			//motor_clock -= this->motor_speed_up;
-			//if (motor_clock < this->min_motor_clock)
-			//	motor_clock = this->min_motor_clock;
-		}
-		for (; i < -steps; i++) {
-			digitalWrite(motor_clk, HIGH);
-			delayMicroseconds(motor_clock);
-			digitalWrite(motor_clk, LOW);
-			delayMicroseconds(motor_clock);
-
-			//motor_clock += this->motor_speed_up;
-			//if (motor_clock > this->initial_motor_clock)
-			//	motor_clock = this->initial_motor_clock;
-		}
+	else {
+		digitalWrite(SUPPORT_LEFT_MOTOR_DIR, HIGH);
+		digitalWrite(SUPPORT_RIGHT_MOTOR_DIR, LOW);
 	}
 
-	this->is_ready = true;
+	int motor_clock = this->initial_motor_clock;
+	int i = 0;
+
+	for (; i < step/2; i += 1) {
+		digitalWrite(SUPPORT_MOTOR_CLK, HIGH);
+		delayMicroseconds(motor_clk);
+		digitalWrite(SUPPORT_MOTOR_CLK, LOW);
+		delayMicroseconds(motor_clk);
+
+		motor_clock -= this->motor_speed_up;
+		if (motor_clock < this->min_motor_clock)
+			motor_clock = this->min_motor_clock;
+	}
+
+	for (; i < step; i += 1) {
+		digitalWrite(SUPPORT_MOTOR_CLK, HIGH);
+		delayMicroseconds(motor_clk);
+		digitalWrite(SUPPORT_MOTOR_CLK, LOW);
+		delayMicroseconds(motor_clk);
+
+		motor_clock += this->motor_speed_up;
+		if (motor_clock > this->initial_motor_clock)
+			motor_clock = this->initial_motor_clock;
+	}
+
+	digitalWrite(SUPPORT_MOTOR_ENABLE, LOW);
 }
