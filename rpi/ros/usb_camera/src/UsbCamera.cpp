@@ -162,7 +162,7 @@ void UsbCamera::compute()
 		}
 	}
 	// update initial frame
-	else if (Valuable::LOW) {
+	else if (valuable == Valuable::LOW) {
 		updateInitialFrame(bgrFrame1, bgrFrame2);
 	}
 }

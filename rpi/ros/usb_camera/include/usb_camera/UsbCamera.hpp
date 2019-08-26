@@ -27,6 +27,11 @@
  * 
  * 상세한 메소드별 설명은 .cpp파일을 보길 바란다.
  */
+
+enum class Valuable {
+	HIGH, MIDDLE, LOW
+};
+
 class UsbCamera {
 public:
 	UsbCamera(ros::NodeHandle& handle);
@@ -52,14 +57,10 @@ private:
 
 	bool readyService(std_srvs::SetBool::Request& req,
 			  std_srvs::SetBool::Response& res);
-	bool isValuableFrame(cv::Mat& frame1, cv::Mat& frame2);
+	Valuable isValuableFrame(cv::Mat& frame1, cv::Mat& frame2);
 	void publish(cv::Mat& frame1, cv::Mat& frame2);
 	void updateInitialFrame(cv::Mat& frame1, cv::Mat& frame2);
 	bool isValuableFrameOnInitialFrame(cv::Mat& curFrame, cv::Mat& initial_frame);
-};
-
-enum class Valuable {
-	HIGH, MIDDLE, LOW
 };
 
 #endif
