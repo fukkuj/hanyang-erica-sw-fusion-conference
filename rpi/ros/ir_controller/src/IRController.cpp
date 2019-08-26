@@ -5,6 +5,7 @@
 #include <string.h>
 #include <arpa/inet.h>
 #include <unistd.h>
+#include <sstream>
 
 
 IRController::IRController()
@@ -50,11 +51,13 @@ void IRController::send(double* dists)
     float percentages[4];
     this->computePercentage(dists, OUT percentages);
 
-    std::string msg;
-    std::for_each(std::begin(percentages), std::end(percentages), [&msg](float elem) -> {
-        msg << elem << " ";
+    std::stringstream msg_buffer;
+    std::for_each(std::begin(percentages), std::end(percentages), [&msg_buffer](float elem) -> {
+        msg_buffer << elem << " ";
     });
 
+    std::string msg;
+    msg_buffer >> msg;
     const char* str = msg.c_str();
 
     ROS_INFO("Send Message: %s", str);
