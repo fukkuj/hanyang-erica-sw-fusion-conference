@@ -8,8 +8,8 @@
 #include "wiringPi.h"
 #include "libsonar/libSonar.h"
 
-#define TRIGGER = {1, 2, 3, 4};
-#define ECHO = {5, 6, 7, 8};
+const int TRIGGER[] = {1, 2, 3, 4};
+const int ECHO[] = {5, 6, 7, 8};
 
 #define ADDR "35.229.136.239"
 #define PORT 13345

@@ -1,9 +1,11 @@
 
 #include "ir_controller/ir_controller_node.hpp"
 #include "ir_controller/IRController.hpp"
+#include <string.h>
+#include <stdlib.h>
 
 void setupWiringPi();
-void interrupt();
+void interrupt(int signo);
 
 IRController* ir_ctrl;
 
@@ -11,7 +13,7 @@ int main(int argc, char* argv[])
 {
     struct sigaction sa;
     memset(&sa, 0, sizeof(sa));
-    sigaddset(&sa_mask, SIGINT);
+    sigaddset(&sa.sa_mask, SIGINT);
     sa.sa_handler = interrupt;
 
     sigaction(SIGINT, &sa, nullptr);
@@ -20,7 +22,7 @@ int main(int argc, char* argv[])
     ros::init(argc, argv, "ir_controller_node");
 
     ir_ctrl = new IRController();
-    ir_ctrl.init();
+    ir_ctrl->init();
 
     ros::Rate rate(10);
 
@@ -28,7 +30,7 @@ int main(int argc, char* argv[])
 
     while (ros::ok()) {
 
-        ir_ctrl.run(dists);
+        ir_ctrl->run(dists);
 
         rate.sleep();
         ros::spinOnce();
@@ -48,6 +50,6 @@ void setupWiringPi()
 void interrupt(int signo)
 {
     ROS_INFO("Receive Interrupt...");
-    ir_ctrl.finalize();
+    ir_ctrl->finalize();
     ros::shutdown();
 }

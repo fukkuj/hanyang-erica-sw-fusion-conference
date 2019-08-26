@@ -55,11 +55,11 @@ void IRController::send(double* dists)
         msg << elem << " ";
     });
 
-    char* str = msg.c_str();
+    const char* str = msg.c_str();
 
     ROS_INFO("Send Message: %s", str);
 
-    write(this_sock, str, strlen(str));
+    write(this->sock, str, strlen(str));
 }
 
 void IRController::computePercentage(double* dists, OUT float* perc)
@@ -70,7 +70,7 @@ void IRController::computePercentage(double* dists, OUT float* perc)
         else if (dists[i] < 10.0)
             perc[i] = 1.f;
         else
-            perc[i] = (40.f - dists[i]) / 30.f
+            perc[i] = (40.f - dists[i]) / 30.f;
     }
 }
 
