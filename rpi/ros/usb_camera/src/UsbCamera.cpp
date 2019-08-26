@@ -150,11 +150,10 @@ void UsbCamera::compute()
 	cv::resize(frame2, bgrFrame2, cv::Size(HEIGHT, WIDTH));
 
 	// compute the valuabilities of frames.
-	bool valuable1 = isValuableFrame(bgrFrame1);
-	bool valuable2 = isValuableFrame(bgrFrame2);
+	Valuable valuable = isValuableFrame(bgrFrame1, bgrFrame2);
 
 	// if valuable, send images to other node
-	if (isReady && (send_count > 0 || (valuable1 && valuable2))) {
+	if (isReady && (send_count > 0 || valueable == Valuable::HIGH)) {
 		publish(bgrFrame1, bgrFrame2);
 		send_count += 1;
 		if (send_count == 8) {
@@ -163,7 +162,7 @@ void UsbCamera::compute()
 		}
 	}
 	// update initial frame
-	else if (!valuable1 && !valuable2) {
+	else if (Valuable::LOW) {
 		updateInitialFrame(bgrFrame1, bgrFrame2);
 	}
 }
@@ -206,25 +205,26 @@ void UsbCamera::waitForDone()
  * classify the frame really contains a trash, using gaussian distance
  * 진짜 쓰레기를 찍은 프레임인지 판단. 벡터 거리 이용
  */
-bool UsbCamera::isValuableFrame(cv::Mat& frame)
+Valuable UsbCamera::isValuableFrame(cv::Mat& frame1, cv::Mat& frame2)
 {
 
-	cv::Mat curFrame;
-	frame.copyTo(curFrame);
+	cv::Mat curFrame1, curFrame2;
+	frame1.copyTo(curFrame1);
+	frame2.copyTo(curFrame2);
 
-	/*
-	preFrame.forEach<Pixel>([=](Pixel& p, const int* pos) -> void {
-		p.x /= 255;
-		p.y /= 255;
-		p.z /= 255;
-	});
-	curFrame.forEach<Pixel>([=](Pixel& p, const int* pos) -> void {
-		p.x /= 255;
-		p.y /= 255;
-		p.z /= 255;
-	});
-	*/
+	bool valuable1 = isValuableFrameOnInitialFrame(curFrame1, initial_frame1);
+	bool valuable2 = isValuableFrameOnInitialFrame(curFrame2, initial_frame2);
 
+	if (valuable1 && valuable2)
+		return Valuable::HIGH;
+	else if (valueable1 || valuable2)
+		return Valuable::MIDDLE;
+	else
+		return Valuable::LOW;
+}
+
+bool UsbCamera::isValuableFrameOnInitialFrame(cv::Mat& curFrame, cv::Mat& initial_frame)
+{
 	cv::Mat res1, res2;
 	cv::subtract(curFrame, initial_frame, res1);
 	cv::subtract(initial_frame, curFrame, res2);
@@ -266,7 +266,7 @@ bool UsbCamera::isValuableFrame(cv::Mat& frame)
 void UsbCamera::updateInitialFrame(cv::Mat& frame1, cv::Mat& frame2)
 {
 	for (int i = 0; i < SIZE; i += 1) {
-		initial_frame1.data[i] = (unsigned char)((float)initial_frame1.data[i] * 0.95f + (float)frame1.data[i] * 0.05f)
-		initial_frame2.data[i] = (unsigned char)((float)initial_frame2.data[i] * 0.95f + (float)frame2.data[i] * 0.05f)
+		initial_frame1.data[i] = (unsigned char)((float)initial_frame1.data[i] * 0.95f + (float)frame1.data[i] * 0.05f);
+		initial_frame2.data[i] = (unsigned char)((float)initial_frame2.data[i] * 0.95f + (float)frame2.data[i] * 0.05f);
 	}
 }

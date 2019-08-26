@@ -52,9 +52,14 @@ private:
 
 	bool readyService(std_srvs::SetBool::Request& req,
 			  std_srvs::SetBool::Response& res);
-	bool isValuableFrame(cv::Mat& frame);
+	bool isValuableFrame(cv::Mat& frame1, cv::Mat& frame2);
 	void publish(cv::Mat& frame1, cv::Mat& frame2);
 	void updateInitialFrame(cv::Mat& frame1, cv::Mat& frame2);
+	bool isValuableFrameOnInitialFrame(cv::Mat& curFrame, cv::Mat& initial_frame);
+};
+
+enum class Valuable {
+	HIGH, MIDDLE, LOW
 };
 
 #endif

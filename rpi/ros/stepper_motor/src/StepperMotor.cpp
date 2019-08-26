@@ -69,9 +69,9 @@ void StepperMotor::moveBoxMotor(int dir, int step)
 
 	for (; i < step/2; i += 1) {
 		digitalWrite(BOX_MOTOR_CLK, HIGH);
-		delayMicroseconds(motor_clk);
+		delayMicroseconds(motor_clock);
 		digitalWrite(BOX_MOTOR_CLK, LOW);
-		delayMicroseconds(motor_clk);
+		delayMicroseconds(motor_clock);
 
 		motor_clock -= this->motor_speed_up;
 		if (motor_clock < this->min_motor_clock)
