@@ -1,4 +1,11 @@
 #include "ir_controller/IRController.hpp"
+#include "ir_controller/ir_controller_node.hpp"
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <string.h>
+#include <arpa/inet.h>
+#include <unistd.h>
+
 
 IRController::IRController()
     : sock(0), nh(nullptr)
