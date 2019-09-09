@@ -8,3 +8,5 @@ ai/ckpts/
 ai/data
 ai/data/
 **/.vscode/
+**/.ipynb_checkpoints/
+data/*

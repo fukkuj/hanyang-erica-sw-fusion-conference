@@ -8,7 +8,7 @@ height = 256
 width = 256
 index_file_name = "index.txt"
 
-cam_index = [1, 2]
+cam_index = [0, 2]
 
 ok = True
 
@@ -41,6 +41,8 @@ def check_for_data_dir():
   
         if not os.path.exists(path) or not os.path.isdir(path):
             os.mkdir(path)
+            os.mkdir(path + "/1")
+            os.mkdir(path + "/2")
             print(f"Data directory '{cat}' was created.")
 
 

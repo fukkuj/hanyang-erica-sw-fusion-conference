@@ -15,7 +15,7 @@ class TrashClassifier(nn.Module):
         super(TrashClassifier, self).__init__()
 
         # construct feature extractor.
-        self.ae = FeatureAE(isEvalMode=True)
+        self.ae = FeatureAE()
         self.ae.load(AE_CKPT_PATH)
         if fine_tune is False:
             for param in self.ae.parameters():
@@ -24,7 +24,7 @@ class TrashClassifier(nn.Module):
         # construct second feature extractor.
         self.features = nn.Sequential(
             # 80*8 x 8 x 8 -> 128 x 8 x 8
-            nn.Conv2d(64*8, 128, (3, 3), stride=1, padding=1),
+            nn.Conv2d(128*8, 128, (3, 3), stride=1, padding=1),
             nn.BatchNorm2d(128),
             nn.Tanh(),
 
@@ -67,7 +67,7 @@ class TrashClassifier(nn.Module):
         w = x.size(4)
         
         reconstructed, latent = self.ae(x.view(n*one_shot, c, h, w))
-        letent = latent.view(n, one_shot*latent.size(1), latent.size(2), latent.size(3))
+        latent = latent.view(n, one_shot*latent.size(1), latent.size(2), latent.size(3))
         
         x = self.features(latent)
         x = x.view(n, -1)

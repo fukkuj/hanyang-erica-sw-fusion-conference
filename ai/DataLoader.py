@@ -22,11 +22,11 @@ class DataLoader():
 
         # build DataLoader. read all images list from data directory.
         # but, does not load actual image data. just load list of names of image.
-        self.data_list = self._read_image_list()
+        self.data_list1, self.data_list2 = self._read_image_list()
         
         # retrieve the number of dataset
-        self.n = len(self.data_list[0])
-        for lst in self.data_list:
+        self.n = len(self.data_list1[0])
+        for lst in self.data_list1:
             self.n = min(self.n, len(lst))
         
         # compute the number of batch
@@ -54,9 +54,24 @@ class DataLoader():
         :y_batch label for data, shaped of (batch_size,)
         """
         
+        data_list1 = []
+        data_list2 = []
+        
         # shuffle dataset
-        for lst in self.data_list:
-            np.random.shuffle(lst)
+        for lst1, lst2 in zip(self.data_list1, self.data_list2):
+            assert len(lst1) == len(lst2)
+            r = np.arange(len(lst1)).astype(np.int32)
+            np.random.shuffle(r)
+            
+            cat_list1 = []
+            cat_list2 = []
+            
+            for i in r.tolist():
+                cat_list1.append(lst1[i])
+                cat_list2.append(lst2[i])
+                
+            data_list1.append(cat_list1)
+            data_list2.append(cat_list2)
         
         # construct batch of images
         for b in range(self.num_batch):
@@ -70,14 +85,29 @@ class DataLoader():
             # index
             i = 0
             
-            for c, lst in enumerate(self.data_list):
-                for d in lst[start:end]:
+            for c in range(len(self.categories)):
+                lst1 = data_list1[c]
+                lst2 = data_list2[c]
+                
+                for d1, d2 in zip(lst1[start:end], lst2[start:end]):
                     j = 0
                     
                     # load images from file
-                    for f in pathlib.Path(d).glob("*.jpg"):
+                    for f in pathlib.Path(d1).glob("*.jpg"):
                         img = self._load_one_image(str(f))
-                        x_batch[i, j, -3:] = img
+                        x_batch[i, j, :3] = img
+                        j += 1
+                        if j == 8:
+                            break
+                            
+                    assert j == 8, f"j: {j}, d: {str(d)}"
+                            
+                    j = 0
+                    
+                    # load images from file
+                    for f in pathlib.Path(d2).glob("*.jpg"):
+                        img = self._load_one_image(str(f))
+                        x_batch[i, j, 3:] = img
                         j += 1
                         if j == 8:
                             break
@@ -86,8 +116,6 @@ class DataLoader():
                             
                     y_batch[i] = c
                     i += 1
-                    
-#             x_batch = self._compute_gradients(x_batch[:, :, -3:].reshape(-1, 3, HEIGHT, WIDTH)).reshape((end - start)*len(self.categories), 8, IN_CHANNEL, HEIGHT, WIDTH)
                 
             # generate data
             yield x_batch, y_batch
@@ -103,22 +131,31 @@ class DataLoader():
         """
         
         # list of all images in data folder
-        lst = []
+        lst1 = []
+        lst2 = []
         
         # read image list in each category directory
         for cat in self.categories:
 
             # list for storing images in single category
-            cat_list = []
+            cat_list1 = []
+            cat_list2 = []
 
             # read names of image in data directory
-            for p in pathlib.Path(os.path.join(self.data_path, cat).replace("\\", "/")).glob("*"):
+            for p in pathlib.Path(os.path.join(self.data_path, cat, "collected_1").replace("\\", "/")).glob("*"):
                 if os.path.isdir(str(p)):
-                    cat_list.append(str(p))
+                    cat_list1.append(str(p))
                 
-            lst.append(cat_list)
+            lst1.append(cat_list1)
+                    
+            # read names of image in data directory
+            for p in pathlib.Path(os.path.join(self.data_path, cat, "collected_2").replace("\\", "/")).glob("*"):
+                if os.path.isdir(str(p)):
+                    cat_list2.append(str(p))
                 
-        return lst
+            lst2.append(cat_list2)
+                
+        return lst1, lst2
     
     def _load_one_image(self, path):
         """
