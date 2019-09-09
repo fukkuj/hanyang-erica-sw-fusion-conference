@@ -3,7 +3,7 @@ import sys
 import numpy as np
 import cv2
 import threading as th
-from Server import Server
+from server.Server import Server
 
 host = "0.0.0.0"
 #host = "192.168.137.1"
@@ -13,8 +13,6 @@ num_classes = 4
 image_width = 96
 image_height = 96
 image_channel = 3
-
-sys.path.append("../")
 
 from ai.AI import AI
 
