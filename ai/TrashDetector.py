@@ -17,7 +17,7 @@ class TrashDetector(nn.Module):
 
         # construct classifier
         self.classifier = nn.Sequential(
-            nn.Linear(3*3*16, 32),
+            nn.Linear(8*8*64, 32),
             nn.Tanh(),
             nn.Dropout(0.5),
 
