@@ -2,7 +2,7 @@ import cv2
 import threading as th
 import os
 
-data_path = "./data"
+data_path = "./data/trash"
 labels_dict = ["nothing", "can", "glass", "paper", "plastic"]
 height = 256
 width = 256
