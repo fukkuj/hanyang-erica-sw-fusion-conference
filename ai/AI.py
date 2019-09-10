@@ -41,7 +41,7 @@ class AI():
         """
 
         with torch.no_grad():
-            x = torch.FloatTensor(x)
+            x = torch.FloatTensor(x).cuda()
             
             if detect(x):
                 result = int(classify(x))
