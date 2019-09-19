@@ -1,7 +1,7 @@
 # data path
-DATA_PATH = "./data/trash_collecting"
-TRASH_TRAIN_DATA_PATH = "./data/trash/train"
-TRASH_VALID_DATA_PATH = "./data/trash/valid"
+DATA_PATH = "./data/trash_collecting/train"
+TRASH_TRAIN_DATA_PATH = "./data/trash_collecting/train"
+TRASH_VALID_DATA_PATH = "./data/trash_collecting/valid"
 DETECTOR_TRAIN_DATA_PATH = "./data/detector/train"
 DETECTOR_VALID_DATA_PATH = "./data/detector/valid"
 

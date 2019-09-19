@@ -4,8 +4,8 @@
 #include "std_srvs/SetBool.h"
 
 #define TIME_INTERVAL 250                   // Interval between camera captures
-#define HEIGHT 96                           // height of image
-#define WIDTH 96                            // width of image
+#define HEIGHT 128                           // height of image
+#define WIDTH 128                            // width of image
 #define CHANNEL 3                           // channel of image BGR = 3
 #define SIZE (HEIGHT * WIDTH * CHANNEL)     // size of image
 
