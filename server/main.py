@@ -4,14 +4,13 @@ import numpy as np
 import cv2
 import threading as th
 from server.Server import Server
+from env import *
 
 host = "0.0.0.0"
 #host = "192.168.137.1"
 port = 13333
 num_step = 8
 num_classes = 4
-image_width = 96
-image_height = 96
 image_channel = 3
 
 from ai.AI import AI
@@ -49,7 +48,7 @@ def main(args):
 
     try:
         while True:
-            image_arr = np.zeros((num_step, image_channel*2, image_height, image_width))
+            image_arr = np.zeros((1, num_step, image_channel*2, HEIGHT, WIDTH))
             cnt = 0
             index = 0
             
@@ -70,8 +69,8 @@ def main(args):
                 # image_rgb = cv2.cvtColor(cv2.imread(f"./test/{index}.jpg"), cv2.COLOR_BGR2RGB)
                 index += 1
 
-                image_arr[cnt, :image_channel] = image_rgb1.transpose(2, 0, 1)
-                image_arr[cnt, image_channel:] = image_rgb2.transpose(2, 0, 1)
+                image_arr[0, cnt, :image_channel] = image_rgb1.transpose(2, 0, 1)
+                image_arr[0, cnt, image_channel:] = image_rgb2.transpose(2, 0, 1)
                 cnt += 1
 
                 image_rgb1 = None

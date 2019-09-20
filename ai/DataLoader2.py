@@ -30,7 +30,7 @@ class DataLoader():
             self.n = min(self.n, len(lst))
         
         # compute the number of batch
-        self.num_batch = int(np.ceil(self.n / (BATCH_SIZE*8//len(self.categories))))
+        self.num_batch = self.n // (8*(BATCH_SIZE//len(self.categories)))
         
         # print information of DataLoader instance.
         print(f"Number of data batch: {self.n}")
@@ -76,11 +76,11 @@ class DataLoader():
         # construct batch of images
         for b in range(self.num_batch):
             start = b * (BATCH_SIZE*8//len(self.categories))
-            end = min((b+1) * (BATCH_SIZE*8//len(self.categories)), self.n)
+            end = (b+1) * (BATCH_SIZE*8//len(self.categories))
             
             # placeholder of batch
-            x_batch = np.zeros(((end - start)*len(self.categories), 8, IN_CHANNEL, HEIGHT, WIDTH))
-            y_batch = np.zeros(((end - start)*len(self.categories),))
+            x_batch = np.zeros(((end - start)*len(self.categories)//8, 8, IN_CHANNEL, HEIGHT, WIDTH))
+            y_batch = np.zeros(((end - start)*len(self.categories)//8,))
             
             # index
             i = 0

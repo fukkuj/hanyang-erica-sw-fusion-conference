@@ -2,6 +2,7 @@ import torch
 import numpy as np
 
 from ai.TrashClassifierAE import TrashClassifier
+from ai.TrashDetector import TrashDetector
 from env import *
 
 
@@ -18,13 +19,15 @@ class AI():
     def build(self):
 
         print("Building AI module...")
-        self.classifier = TrashClassifier(fine_tune=False)
-        self.detector = TrashDetector()
+        self.classifier = TrashClassifier(fine_tune=False).cuda()
+        self.classifier.load(CLF_CKPT_PATH)
+        self.detector = TrashDetector().cuda()
+        self.detector.load(DET_CKPT_PATH)
 
         if torch.cuda.is_available():
             if torch.cuda.device_count() > 1:
-                self.classifier = torch.nn.DataParallel(self.classifier, device_ids=CUDA_DEVICES)
-                self.detector = torch.nn.DataParallel(self.detector, device_ids=CUDA_DEVICES)
+                self.classifier = torch.nn.DataParallel(self.classifier, device_ids=CUDA_DEVICES).cuda()
+                self.detector = torch.nn.DataParallel(self.detector, device_ids=CUDA_DEVICES).cuda()
 
                 self.classifier_model = self.classifier.module
                 self.detector_model = self.detector.module
@@ -41,10 +44,11 @@ class AI():
         """
 
         with torch.no_grad():
+            x = (x - 128) / 128
             x = torch.FloatTensor(x).cuda()
             
-            if detect(x):
-                result = int(classify(x))
+            if self.detect(x):
+                result = int(self.classify(x))
             else:
                 result = -1
                 
@@ -55,8 +59,10 @@ class AI():
             
         logps = self.detector(x)
         ps = torch.exp(logps)
+
+        # print(ps[:, 1])
         
-        ratio = ps[:, 1] >= 0.95
+        ratio = ps[:, 1] >= 0.9
         ratio = torch.mean(ratio.type(torch.FloatTensor))
         
         # if 6 or more pictures have trash,
@@ -70,4 +76,4 @@ class AI():
         ps = torch.exp(logps)
         
         _, topk = ps.topk(1, dim=1)
-        return topk.cpu().detach().numpy().squeeze()[0]
+        return topk.cpu().detach().numpy().squeeze()

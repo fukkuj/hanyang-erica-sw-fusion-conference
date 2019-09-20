@@ -54,10 +54,10 @@ class ImageSubscriber():
         self.image_data.append(image.reshape(HEIGHT, WIDTH, CHANNEL))
         self.cnt += 1
 
-        if self.cnt == 8:
+        if self.cnt == 16:
             self.ready = False
             
-        if len(image_data) >= 2:
+        if len(self.image_data) >= 2:
             self.two = True
         else:
             self.two = False
