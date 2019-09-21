@@ -92,8 +92,8 @@ class DataLoader():
                 j = 0
                 
                 for img_path1, img_path2 in zip(lst1[start:end], lst2[start:end]):
-                    img1 = self._load_one_image((img_path1))
-                    img2 = self._load_one_image((img_path2))
+                    img1 = self._load_one_image(img_path1)
+                    img2 = self._load_one_image(img_path2)
 
                     if np.random.rand() > 0.5:
                         x_batch[i, j, :3] = img1
@@ -136,12 +136,14 @@ class DataLoader():
             for p in pathlib.Path(os.path.join(self.data_path, cat, "1").replace("\\", "/")).glob("*.jpg"):
                 cat_list1.append(str(p))
                 
+            cat_list1 = sorted(cat_list1)
             lst1.append(cat_list1)
                     
             # read names of image in data directory
             for p in pathlib.Path(os.path.join(self.data_path, cat, "2").replace("\\", "/")).glob("*.jpg"):
                 cat_list2.append(str(p))
                 
+            cat_list2 = sorted(cat_list2)
             lst2.append(cat_list2)
                 
         return lst1, lst2
