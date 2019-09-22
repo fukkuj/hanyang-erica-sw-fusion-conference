@@ -19,13 +19,16 @@ class Server extends Thread {
 
     @SuppressWarnings("deprecation")
     public void run() {
-        String request = "";
         String response = "";
-        String lines = "";
-        String filename = "";
-        String method = "";
+        String request = "";
         String temp[];
-        String path = "Server Directory";
+
+//        String method = "";
+//        String lines = "";
+//        String filename = "";
+//        String path = "Server Directory";
+
+
         byte[] b = new byte[2048];
         int i;
 
@@ -33,53 +36,58 @@ class Server extends Thread {
             System.out.println("New connection created: " + client.getRemoteSocketAddress() );
             dataInputStream = new DataInputStream(client.getInputStream());
             request = dataInputStream.readLine();
-            dataInputStream.readLine();
-            dataInputStream.readLine();
-            lines = request.split("\n")[0];
-            temp = lines.split(" ");
-            method = temp[0];
-            temp = temp[1].split("/");
-            filename = temp[temp.length - 1];
-            File f = new File(path);
-            if(!f.exists()) {
-                f.mkdir();
-            }
+//            dataInputStream.readLine();
+//            dataInputStream.readLine();
 
-            path = path + "/" + filename;
-            f = new File(path);
+//            lines = request.split("\n")[0];
+//            temp = lines.split(" ");
+//            method = temp[0];
+//            temp = temp[1].split("/");
+//            filename = temp[temp.length - 1];
+//            File f = new File(path);
+//            if(!f.exists()) {
+//                f.mkdir();
+//            }
+//
+//            path = path + "/" + filename;
+//            f = new File(path);
 
-            if("get".equalsIgnoreCase(method) ) {
-                if (f.exists()) {
-                    response = "HTTP/1.1 200 OK \r\nDate: " + new Date() + "\r\n";
-                    FileInputStream fileInputStream = new FileInputStream(path);
-                    while ((i = fileInputStream.read(b)) != -1) {
-                        response += new String(b, 0, i) + "\n";
-                    }
-                    fileInputStream.close();
-                } else {
-                    response = "HTTP/1.1 404 Not Found\r\nDate " + new Date() + "\r\n";
-                }
-            }else if ("put".equalsIgnoreCase(method)) {
-                    f = new File(path);
-                    if (!f.exists()) {
-                        f.createNewFile();
-                    }
-                    int size = Integer.parseInt(dataInputStream.readLine());
-                    FileOutputStream fileOutputStream = new FileOutputStream(path);
-                    while (size > 0) {
-                        i = dataInputStream.read(b);
-                        fileOutputStream.write(b, 0, i);
-                        size--;
-                    }
-                    fileOutputStream.close();
-                    response = "HTTP/1.1 200 OK File Created Succesfully\r\nDate: " + new Date() + "\r\n\r\n";
-                } else {
-                    response = "HTTP/1.1 301 Bad Request\r\nDate: " + new Date() + "\r\n\r\n";
-                }
-                printStream = new PrintStream(client.getOutputStream());
-                printStream.println(response);
-                Thread.sleep(1000);
-                System.out.println("Connection: " + client.getRemoteSocketAddress() + "closed");
+////            if("get".equalsIgnoreCase(method) ) {
+//                if (f.exists()) {
+//                    response = "HTTP/1.1 200 OK \r\nDate: " + new Date() + "\r\n";
+//                    FileInputStream fileInputStream = new FileInputStream(path);
+//                    while ((i = fileInputStream.read(b)) != -1) {
+//                        response += new String(b, 0, i) + "\n";
+//                    }
+//                    fileInputStream.close();
+//                } else {
+//                    response = "HTTP/1.1 404 Not Found\r\nDate " + new Date() + "\r\n";
+//                }
+////            }
+//        else if ("put".equalsIgnoreCase(method)) {
+//                    f = new File(path);
+//                    if (!f.exists()) {
+//                        f.createNewFile();
+//                    }
+//                    int size = Integer.parseInt(dataInputStream.readLine());
+//                    FileOutputStream fileOutputStream = new FileOutputStream(path);
+//                    while (size > 0) {
+//                        i = dataInputStream.read(b);
+//                        fileOutputStream.write(b, 0, i);
+//                        size--;
+//                    }
+//                    fileOutputStream.close();
+//                    response = "HTTP/1.1 200 OK File Created Succesfully\r\nDate: " + new Date() + "\r\n\r\n";
+//                } else {
+//                    response = "HTTP/1.1 301 Bad Request\r\nDate: " + new Date() + "\r\n\r\n";
+//                }
+
+
+            printStream = new PrintStream(client.getOutputStream());
+            printStream.println(request);
+            System.out.println("request :" + request);
+            Thread.sleep(1000);
+            System.out.println("Connection: " + client.getRemoteSocketAddress() + "closed");
 
 
             } catch (InterruptedException e) {
