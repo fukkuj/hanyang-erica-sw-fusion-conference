@@ -33,7 +33,7 @@ class DataLoader():
         self.num_batch = self.n // (8*(BATCH_SIZE//len(self.categories)))
         
         # print information of DataLoader instance.
-        print(f"Number of data batch: {self.n}")
+        print(f"Number of data: {self.n}")
         print(f"Number of batch: {self.num_batch}")
         
     def __len__(self):
