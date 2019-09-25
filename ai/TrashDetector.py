@@ -55,15 +55,10 @@ class TrashDetector(nn.Module):
 
         # retrieve number of images
         n = x.size(0)
-        s = x.size(1)
-        c = x.size(2)
-        h = x.size(3)
-        w = x.size(4)
         
-        x = x.view(n*s, c, h, w)
         _, x = self.features(x)
         x = self.cnn(x)
-        x = x.view(n*s, -1)
+        x = x.view(n, -1)
         x = self.classifier(x)
 
         return x
