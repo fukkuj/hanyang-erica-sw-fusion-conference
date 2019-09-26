@@ -3,7 +3,7 @@ import sys
 import numpy as np
 import cv2
 import threading as th
-from server.Server import Server
+from ai_server.Server import Server
 from env import *
 
 host = "0.0.0.0"
@@ -78,7 +78,7 @@ def main(args):
                 image_bgr1 = None
                 image_bgr2 = None
 
-            result = ai.predict(image_arr)
+            result = ai.predict(image_arr.astype(np.float32))
             print("Result: {}".format(trash_map[result]))
 
             server.send_result(result)
