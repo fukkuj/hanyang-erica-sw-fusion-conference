@@ -23,29 +23,30 @@ class TrashClassifier(nn.Module):
 
         # construct second feature extractor.
         self.features = nn.Sequential(
-            # 80*8 x 8 x 8 -> 128 x 8 x 8
-            nn.Conv2d(128*8, 128, (3, 3), stride=1, padding=1),
-            nn.BatchNorm2d(128),
-            nn.Tanh(),
-
-            # 128 x 8 x 8 -> 64 x 8 x 8
-            nn.Conv2d(128, 64, (3, 3), stride=1, padding=1),
-            nn.BatchNorm2d(64),
-            nn.Tanh(),
-
-            # 64 x 8 x 8 -> 32 x 8 x 8
-            nn.Conv2d(64, 32, (3, 3), stride=1, padding=1),
+            # 128*8 x 8 x 8 -> 32 x 8 x 8
+            nn.Conv2d(128*8, 32, (3, 3), stride=1, padding=1),
             nn.BatchNorm2d(32),
             nn.Tanh(),
+            
+            # 32 x 8 x 8 -> 32 x 4 x 4
+            nn.MaxPool2d((2, 2), stride=2, padding=0),
+
+            # 32 x 4 x 4 -> 32 x 4 x 4
+            nn.Conv2d(32, 32, (3, 3), stride=1, padding=1),
+            nn.BatchNorm2d(32),
+            nn.Tanh(),
+            
+            # 32 x 4 x 4 -> 32 x 2 x 2
+            nn.MaxPool2d((2, 2), stride=2, padding=0),
         )
 
         # construct classifier.
         self.classifier = nn.Sequential(
-            nn.Linear(8*8*32, 32),
+            nn.Linear(2*2*32, 16),
             nn.Tanh(),
             nn.Dropout(0.5),
 
-            nn.Linear(32, len(TRASH_CAT)),
+            nn.Linear(16, len(TRASH_CAT)),
             nn.LogSoftmax(dim=1)
         )
 

@@ -7,11 +7,13 @@ DETECTOR_TRAIN_DATA_PATH = "./data/detector/train"
 DETECTOR_VALID_DATA_PATH = "./data/detector/valid"
 
 AE_CKPT_PATH = "./ai/ckpts/ae.pth"
+CNN_CKPT_PATH = "./ai/ckpts/fcnn.pth"
 CLF_CKPT_PATH = "./ai/ckpts/clf.pth"
 DET_CKPT_PATH = "./ai/ckpts/det.pth"
 
 # hyper parameters
-BATCH_SIZE = 32
+# BATCH_SIZE = 32
+BATCH_SIZE = 6
 ETA = 1e-3
 EPOCHS = 100
 

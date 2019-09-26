@@ -19,32 +19,19 @@ class TrashClassifier(nn.Module):
 
         # construct second feature extractor.
         self.features = nn.Sequential(
-            # 32 x 16 x 16 -> 64 x 16 x 16
+            # 64*8 x 8 x 8 -> 64 x 8 x 8
             nn.Conv2d(64*8, 64, (3, 3), stride=1, padding=1),
             nn.BatchNorm2d(64),
-            nn.Tanh(),
+            nn.LeakyReLU(),
             
-            # 64 x 16 x 16 -> 64 x 8 x 8
+            # 64 x 8 x 8 -> 64 x 4 x 4
             nn.MaxPool2d((2, 2), stride=2, padding=0),
-
-            # 64 x 8 x 8 -> 32 x 8 x 8
-            nn.Conv2d(64, 32, (3, 3), stride=1, padding=1),
-            nn.BatchNorm2d(32),
-            nn.Tanh(),
-            
-            # 32 x 8 x 8 -> 32 x 4 x 4
-            nn.MaxPool2d((2, 2), stride=2, padding=0),
-
-            # 32 x 4 x 4 -> 16 x 4 x 4
-            nn.Conv2d(32, 16, (3, 3), stride=1, padding=1),
-            nn.BatchNorm2d(16),
-            nn.Tanh(),
         )
 
         # construct classifier.
         self.classifier = nn.Sequential(
-            nn.Linear(4*4*16, 32),
-            nn.Tanh(),
+            nn.Linear(4*4*64, 32),
+            nn.LeakyReLU(),
             nn.Dropout(0.5),
 
             nn.Linear(32, len(TRASH_CAT)),
@@ -67,8 +54,8 @@ class TrashClassifier(nn.Module):
         c = x.size(2)               # channel. 3 since there are 3 channels, R, G, B
 
         # extract features
-        x = self.fcnn(x.view(n*num_of_one_shot, c, HEIGHT, WIDTH))  # processing images using FeatureCNN
-        x = x.view(n, 64*8, HEIGHT//(2**3), WIDTH//(2**3))          # reshape tensor
+        x, _ = self.fcnn(x.view(n*num_of_one_shot, c, HEIGHT, WIDTH))  # processing images using FeatureCNN
+        x = x.view(n, 64*8, 8, 8)          # reshape tensor
 
         # processing features using second feature extractor
         x = self.features(x)
@@ -81,5 +68,15 @@ class TrashClassifier(nn.Module):
 
         return x
 
+    
+    def save(self, path):
+        state_dict = self.state_dict()
+        torch.save(state_dict, path)
+        print("Classifier was saved.")
+        
+    def load(self, path):
+        state_dict = torch.load(path)
+        self.load_state_dict(state_dict)
+        print("Classifier was loaded.")
 
         
