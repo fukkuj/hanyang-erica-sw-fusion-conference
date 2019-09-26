@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
+
     <list default="true" id="d955d2ef-cdb2-42c9-a61d-3d74e57caf11" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/src/com/mobile/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/mobile/Client.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/mobile/RasberryServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/mobile/RasberryServer.java" afterDir="false" />
+
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -12,6 +14,7 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
@@ -110,12 +113,14 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="60">
               <caret line="4" column="4" selection-start-line="4" selection-start-column="4" selection-end-line="4" selection-end-column="4" />
+>>>>>>> 0fcaf25d76d388373b9c05bd800697dcf4d966db
             </state>
           </provider>
         </entry>
       </file>
     </leaf>
   </component>
+
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
@@ -136,6 +141,7 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+>>>>>>> 0fcaf25d76d388373b9c05bd800697dcf4d966db
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -184,11 +190,13 @@
               <item name="mobileServer" type="b2602c69:ProjectViewProjectNode" />
               <item name="mobileServer" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+
               <item name="mobile" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="mobileServer" type="b2602c69:ProjectViewProjectNode" />
               <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+>>>>>>> 0fcaf25d76d388373b9c05bd800697dcf4d966db
             </path>
           </expand>
           <select />
@@ -198,6 +206,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
+
     <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1569120503315" />
   </component>
   <component name="RecentsManager">
@@ -242,6 +251,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+
     <configuration name="RasberryServer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.mobile.RasberryServer" />
       <module name="mobileServer" />
@@ -265,6 +275,7 @@
       <list>
         <item itemvalue="Application.Client" />
         <item itemvalue="Application.RasberryServer" />
+>>>>>>> 0fcaf25d76d388373b9c05bd800697dcf4d966db
         <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
@@ -274,6 +285,7 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
+
       <changelist id="d955d2ef-cdb2-42c9-a61d-3d74e57caf11" name="Default Changelist" comment="" />
       <created>1569049385722</created>
       <option name="number" value="Default" />
@@ -301,6 +313,7 @@
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32863188" />
       <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.2605156" />
+>>>>>>> 0fcaf25d76d388373b9c05bd800697dcf4d966db
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -438,6 +451,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
           <caret line="4" column="4" selection-start-line="4" selection-start-column="4" selection-end-line="4" selection-end-column="4" />
+>>>>>>> 0fcaf25d76d388373b9c05bd800697dcf4d966db
         </state>
       </provider>
     </entry>
