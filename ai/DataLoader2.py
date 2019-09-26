@@ -192,8 +192,11 @@ class DataLoader():
                 noise = np.random.randn(*image.shape) * 10
                 image = image + noise
             
+        image[image > 255] = 255
+        image[image < 0] = 0
+            
         # standardize
-        image = (image - 128) / 128
+        image = (image - 128) / 256
         #########
         
         return image

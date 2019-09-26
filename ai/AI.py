@@ -44,7 +44,7 @@ class AI():
         """
 
         with torch.no_grad():
-            x = (x - 128) / 128
+            x = (x - 128) / 256
             x = torch.FloatTensor(x).cuda()
             
             result = int(self.classify(x))
