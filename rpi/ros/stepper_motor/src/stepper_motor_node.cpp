@@ -39,4 +39,10 @@ void setWiringPi()
 	pinMode(SUPPORT_MOTOR_CLK, OUTPUT);
 	pinMode(SUPPORT_LEFT_MOTOR_DIR, OUTPUT);
 	pinMode(SUPPORT_RIGHT_MOTOR_DIR, OUTPUT);
+
+	//pinMode(24, OUTPUT);
+	//pinMode(27, OUTPUT);
+
+	//digitalWrite(24, HIGH);
+	//digitalWrite(27, HIGH);
 }

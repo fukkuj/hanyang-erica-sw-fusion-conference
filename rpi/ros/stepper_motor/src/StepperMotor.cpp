@@ -73,9 +73,9 @@ void StepperMotor::moveBoxMotor(int dir, int step)
 		digitalWrite(BOX_MOTOR_CLK, LOW);
 		delayMicroseconds(motor_clock);
 
-		motor_clock -= this->motor_speed_up;
-		if (motor_clock < this->min_motor_clock)
-			motor_clock = this->min_motor_clock;
+		//motor_clock -= this->motor_speed_up;
+		//if (motor_clock < this->min_motor_clock)
+		//	motor_clock = this->min_motor_clock;
 	}
 
 	for (; i < step; i += 1) {
@@ -84,9 +84,9 @@ void StepperMotor::moveBoxMotor(int dir, int step)
 		digitalWrite(BOX_MOTOR_CLK, LOW);
 		delayMicroseconds(motor_clock);
 
-		motor_clock += this->motor_speed_up;
-		if (motor_clock > this->initial_motor_clock)
-			motor_clock = this->initial_motor_clock;
+		//motor_clock += this->motor_speed_up;
+		//if (motor_clock > this->initial_motor_clock)
+		//	motor_clock = this->initial_motor_clock;
 	}
 
 	digitalWrite(BOX_MOTOR_ENABLE, LOW);
@@ -114,9 +114,9 @@ void StepperMotor::moveSupportMotor(int dir, int step)
 		digitalWrite(SUPPORT_MOTOR_CLK, LOW);
 		delayMicroseconds(motor_clock);
 
-		motor_clock -= this->motor_speed_up;
-		if (motor_clock < this->min_motor_clock)
-			motor_clock = this->min_motor_clock;
+		//motor_clock -= this->motor_speed_up;
+		//if (motor_clock < this->min_motor_clock)
+		//	motor_clock = this->min_motor_clock;
 	}
 
 	for (; i < step; i += 1) {
@@ -125,9 +125,9 @@ void StepperMotor::moveSupportMotor(int dir, int step)
 		digitalWrite(SUPPORT_MOTOR_CLK, LOW);
 		delayMicroseconds(motor_clock);
 
-		motor_clock += this->motor_speed_up;
-		if (motor_clock > this->initial_motor_clock)
-			motor_clock = this->initial_motor_clock;
+		//motor_clock += this->motor_speed_up;
+		//if (motor_clock > this->initial_motor_clock)
+		//	motor_clock = this->initial_motor_clock;
 	}
 
 	digitalWrite(SUPPORT_MOTOR_ENABLE, LOW);
