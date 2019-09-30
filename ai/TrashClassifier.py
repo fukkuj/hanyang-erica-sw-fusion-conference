@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 
 from ai.FeatureCNN import FeatureCNN
-from env import HEIGHT, WIDTH, TRASH_CAT
+from env import *
 
 
 class TrashClassifier(nn.Module):
@@ -16,6 +16,9 @@ class TrashClassifier(nn.Module):
 
         # construct feature extractor.
         self.fcnn = FeatureCNN()
+        self.fcnn.load(CNN_CKPT_PATH)
+        for param in self.fcnn.parameters():
+            param.requires_grad_(False)
 
         # construct second feature extractor.
         self.features = nn.Sequential(

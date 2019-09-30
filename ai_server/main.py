@@ -48,7 +48,7 @@ def main(args):
 
     try:
         while True:
-            image_arr = np.zeros((1, num_step, image_channel*2, HEIGHT, WIDTH))
+            image_arr = np.zeros((1, num_step, image_channel*2, HEIGHT, WIDTH), dtype=np.float32)
             cnt = 0
             index = 0
             
@@ -69,8 +69,8 @@ def main(args):
                 # image_rgb = cv2.cvtColor(cv2.imread(f"./test/{index}.jpg"), cv2.COLOR_BGR2RGB)
                 index += 1
 
-                image_arr[0, cnt, :image_channel] = image_rgb1.transpose(2, 0, 1)
-                image_arr[0, cnt, image_channel:] = image_rgb2.transpose(2, 0, 1)
+                image_arr[0, cnt, :image_channel] = image_rgb1.transpose(2, 0, 1).astype(np.float32)
+                image_arr[0, cnt, image_channel:] = image_rgb2.transpose(2, 0, 1).astype(np.float32)
                 cnt += 1
 
                 image_rgb1 = None
@@ -78,7 +78,7 @@ def main(args):
                 image_bgr1 = None
                 image_bgr2 = None
 
-            result = ai.predict(image_arr.astype(np.float32))
+            result = ai.predict(image_arr)
             print("Result: {}".format(trash_map[result]))
 
             server.send_result(result)

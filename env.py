@@ -12,8 +12,8 @@ CLF_CKPT_PATH = "./ai/ckpts/clf.pth"
 DET_CKPT_PATH = "./ai/ckpts/det.pth"
 
 # hyper parameters
-# BATCH_SIZE = 32
-BATCH_SIZE = 6
+BATCH_SIZE = 28
+# BATCH_SIZE = 6
 ETA = 1e-3
 EPOCHS = 100
 
