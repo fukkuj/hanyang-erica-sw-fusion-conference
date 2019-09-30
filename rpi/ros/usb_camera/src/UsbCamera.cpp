@@ -51,7 +51,7 @@ void UsbCamera::init()
 
 	// open 2 cameras.
 	cap1 = new cv::VideoCapture(0);
-	cap2 = new cv::VideoCapture(1);
+	cap2 = new cv::VideoCapture(2);
 
 	// input initial image from 2 cameras.
 	cv::Mat temp1, temp2;
