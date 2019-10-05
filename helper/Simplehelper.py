@@ -8,7 +8,7 @@ height = 256
 width = 256
 index_file_name = "index.txt"
 
-cam_index = [2, 0]
+cam_index = [1, 0]
 
 ok = True
 
