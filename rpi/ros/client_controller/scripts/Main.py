@@ -9,7 +9,8 @@ import sys
 import threading as th
 import time
 
-HOST =  "35.229.136.239"
+#HOST =  "35.229.136.239"
+HOST =  "35.236.168.202"
 #HOST = "34.80.12.180"
 #HOST = "192.168.137.1"
 PORT = 13333

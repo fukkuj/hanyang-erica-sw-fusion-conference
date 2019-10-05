@@ -4,3 +4,6 @@
 **/.vscode/
 **/.ipynb_checkpoints/
 data/*
+**/test
+**/CMakeLists.txt
+**/package.xml
