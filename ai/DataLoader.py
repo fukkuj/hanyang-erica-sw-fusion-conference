@@ -91,28 +91,35 @@ class DataLoader():
                 
                 for d1, d2 in zip(lst1[start:end], lst2[start:end]):
                     j = 0
+                    r = np.random.rand()
                     
                     # load images from file
                     for f in pathlib.Path(d1).glob("*.jpg"):
                         img = self._load_one_image(str(f))
-                        x_batch[i, j, :3] = img
+                        if r < 0.5:
+                            x_batch[i, j, :3] = img
+                        else:
+                            x_batch[i, j, 3:] = img
                         j += 1
                         if j == 8:
                             break
                             
-                    assert j == 8, f"j: {j}, d: {str(d)}"
+                    assert j == 8, f"j: {j}, d: {str(d1)}"
                             
                     j = 0
                     
                     # load images from file
                     for f in pathlib.Path(d2).glob("*.jpg"):
                         img = self._load_one_image(str(f))
-                        x_batch[i, j, 3:] = img
+                        if r < 0.5:
+                            x_batch[i, j, 3:] = img
+                        else:
+                            x_batch[i, j, :3] = img
                         j += 1
                         if j == 8:
                             break
                             
-                    assert j == 8, f"j: {j}, d: {str(d)}"
+                    assert j == 8, f"j: {j}, d: {str(d1)}"
                             
                     y_batch[i] = c
                     i += 1
@@ -201,8 +208,11 @@ class DataLoader():
                 noise = np.random.randn(*image.shape) * 10
                 image = image + noise
             
+        image[image > 255] = 255
+        image[image < 0] = 0
+            
         # standardize
-        image = (image - 128) / 128
+        image = (image - 128) / 256
         #########
         
         return image

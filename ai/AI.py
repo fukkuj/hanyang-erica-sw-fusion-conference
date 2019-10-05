@@ -62,7 +62,7 @@ class AI():
 
         print(ps)
         
-        ratio = ps[:, 1] > 0.50
+        ratio = ps[:, 1] > 0.30
         ratio = torch.mean(ratio.type(torch.FloatTensor))
         
         # if 6 or more pictures have trash,
