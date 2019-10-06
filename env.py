@@ -8,7 +8,8 @@ DETECTOR_VALID_DATA_PATH = "./data/detector/valid"
 
 AE_CKPT_PATH = "./ai/ckpts/ae.pth"
 CNN_CKPT_PATH = "./ai/ckpts/fcnn.pth"
-CLF_CKPT_PATH = "./ai/ckpts/clf.pth"
+CNN_CLF_CKPT_PATH = "./ai/ckpts/clf_cnn.pth"
+AE_CLF_CKPT_PATH = "./ai/ckpts/clf_ae.pth"
 DET_CKPT_PATH = "./ai/ckpts/det.pth"
 
 # hyper parameters
