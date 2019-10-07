@@ -15,7 +15,7 @@ from env import *
 EPOCHS = 200
 ETA = 1e-4
 
-model = TrashClassifier(fine_tune=True)
+model = TrashClassifier(fine_tune=False)
 model = model.cuda()
 
 train_dloader = DataLoader(TRASH_TRAIN_DATA_PATH, TRASH_CAT)

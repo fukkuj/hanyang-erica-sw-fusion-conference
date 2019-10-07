@@ -44,7 +44,7 @@ class TrashClassifier(nn.Module):
         self.classifier = nn.Sequential(
             nn.Linear(2*2*32, 16),
             nn.Tanh(),
-            nn.Dropout(0.5),
+            nn.Dropout(0.3),
 
             nn.Linear(16, len(TRASH_CAT)),
             nn.LogSoftmax(dim=1)

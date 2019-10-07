@@ -15,7 +15,7 @@ class TrashDetector(nn.Module):
         
         self.features = nn.Sequential(
             # 32 x 128 x 128
-            nn.Conv2d(6, 32, (5, 5), stride=1, padding=2),
+            nn.Conv2d(IN_CHANNEL, 32, (5, 5), stride=1, padding=2),
             nn.BatchNorm2d(32),
             nn.LeakyReLU(),
             

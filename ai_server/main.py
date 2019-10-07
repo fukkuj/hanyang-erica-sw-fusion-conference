@@ -54,29 +54,23 @@ def main(args):
             
             while cnt < num_step:
 
-                image_bgr1 = server.wait_for_image()
-                image_bgr2 = server.wait_for_image()
-                if image_bgr1 is None or image_bgr2 is None:
+                image_bgr = server.wait_for_image()
+                if image_bgr is None:
                     continue
 
                 # print(image_bgr.shape)
 
-                image_rgb1 = cv2.cvtColor(image_bgr1, cv2.COLOR_BGR2RGB)
-                image_rgb2 = cv2.cvtColor(image_bgr2, cv2.COLOR_BGR2RGB)
+                image_rgb = cv2.cvtColor(image_bgr, cv2.COLOR_BGR2RGB)
 
-                cv2.imwrite(f"./test/{index}_1.jpg", image_bgr1)
-                cv2.imwrite(f"./test/{index}_2.jpg", image_bgr2)
+                cv2.imwrite(f"./test/{index}.jpg", image_bgr)
                 # image_rgb = cv2.cvtColor(cv2.imread(f"./test/{index}.jpg"), cv2.COLOR_BGR2RGB)
                 index += 1
 
-                image_arr[0, cnt, :image_channel] = image_rgb1.transpose(2, 0, 1).astype(np.float32)
-                image_arr[0, cnt, image_channel:] = image_rgb2.transpose(2, 0, 1).astype(np.float32)
+                image_arr[0, cnt] = image_rgb.transpose(2, 0, 1).astype(np.float32)
                 cnt += 1
 
-                image_rgb1 = None
-                image_rgb2 = None
-                image_bgr1 = None
-                image_bgr2 = None
+                image_rgb = None
+                image_bgr = None
 
             result = ai.predict(image_arr)
             print("Result: {}".format(trash_map[result]))
@@ -94,6 +88,9 @@ def main(args):
     except TypeError as e:
         print(e)
         print("Exception occurs. Server shutdown.")
+    
+    except:
+        pass
 
     server.close()
     ok = False

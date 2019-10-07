@@ -8,7 +8,7 @@ height = 256
 width = 256
 index_file_name = "index.txt"
 
-cam_index = [1, 0]
+cam_index = [1]
 
 ok = True
 
@@ -18,19 +18,13 @@ ok = True
 def capture(*argv):
     global ok
     
-    cap1 = argv[0]
-    cap2 = argv[1]
+    cap = argv[0]
     
     while ok:
-        test1, frame1 = cap1.read()
+        test, frame = cap.read()
         
-        if test1:
-            cv2.imshow("Helper1", frame1)
-        
-        test2, frame2 = cap2.read()
-        
-        if test2:
-            cv2.imshow("Helper2", frame2)
+        if test:
+            cv2.imshow("Helper", frame)
             
         cv2.waitKey(10)
         
@@ -41,8 +35,6 @@ def check_for_data_dir():
   
         if not os.path.exists(path) or not os.path.isdir(path):
             os.mkdir(path)
-            os.mkdir(path + "/1")
-            os.mkdir(path + "/2")
             print(f"Data directory '{cat}' was created.")
 
 
@@ -55,8 +47,7 @@ def check_for_index_file():
             print("Index file was created.")
 
 def main(args):
-    cap1 = cv2.VideoCapture(cam_index[0])
-    cap2 = cv2.VideoCapture(cam_index[1])
+    cap = cv2.VideoCapture(cam_index[0])
     
     # cap1.set(cv2.CAP_PROP_FRAME_WIDTH,320)
     # cap1.set(cv2.CAP_PROP_FRAME_HEIGHT,240)
@@ -64,10 +55,8 @@ def main(args):
     # cap2.set(cv2.CAP_PROP_FRAME_WIDTH,320)
     # cap2.set(cv2.CAP_PROP_FRAME_HEIGHT,240)
     
-    if cap1.isOpened() is False:
-        print("cap1 error")
-    if cap2.isOpened() is False:
-        print("cap2 error")
+    if cap.isOpened() is False:
+        print("cap error")
 
     cur_index = 1
  
@@ -79,7 +68,7 @@ def main(args):
     with open(info_file_path, "r") as f:
         cur_index = int(f.read())
     
-    thread = th.Thread(target=capture, args=(cap1, cap2))
+    thread = th.Thread(target=capture, args=(cap,))
     thread.start()
 
     while True:
@@ -98,13 +87,10 @@ def main(args):
                 if not (0 <= label <= 4):
                     continue
 
-                _, image1 = cap1.read()
-                _, image2 = cap2.read()
+                _, image = cap.read()
 
-                image1 = cv2.resize(image1, dsize=(height, width))
-                image2 = cv2.resize(image2, dsize=(height, width))
-                cv2.imwrite(os.path.join(data_path, "{}/1/%08d_1.jpg".format(labels_dict[label])).replace("\\", "/") % cur_index, image1)
-                cv2.imwrite(os.path.join(data_path, "{}/2/%08d_2.jpg".format(labels_dict[label])).replace("\\", "/") % cur_index, image2)
+                image = cv2.resize(image, dsize=(height, width))
+                cv2.imwrite(os.path.join(data_path, "{}/%08d.jpg".format(labels_dict[label])).replace("\\", "/") % cur_index, image)
                 # label_file.write("{0} {1}/%08d.jpg\n".format(label, labels_dict[label]) % cur_index)
 
                 cur_index += 1
@@ -121,8 +107,7 @@ def main(args):
     
     thread.join()
     
-    cap1.release()
-    cap2.release()
+    cap.release()
 
 if __name__ == "__main__":
     import sys

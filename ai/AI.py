@@ -20,7 +20,7 @@ class AI():
 
         print("Building AI module...")
         self.classifier = TrashClassifier().cuda()
-        self.classifier.load(CLF_CKPT_PATH)
+        self.classifier.load(AE_CLF_CKPT_PATH)
         self.detector = TrashDetector().cuda()
         self.detector.load(DET_CKPT_PATH)
 
@@ -40,7 +40,7 @@ class AI():
         """
         Arguments:
         ----------
-        :x images, shaped of (1, 8, 6, HEIGHT, WIDTH)
+        :x images, shaped of (1, 8, 3, HEIGHT, WIDTH)
         """
 
         with torch.no_grad():

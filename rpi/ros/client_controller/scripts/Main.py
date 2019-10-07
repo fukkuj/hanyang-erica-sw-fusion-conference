@@ -58,7 +58,7 @@ def main(argv):
     global result
     global ok
 
-    rospy.init_node("client_controller", anonymous=True)
+    rospy.init_node("client_controller", anonymous=False)
 
     client = Client()
     if client.connect(HOST, PORT) is False:
@@ -108,13 +108,12 @@ def main(argv):
             rate.sleep()
             continue
 
-        images = image_sub.get_image()
-        if images is None:
+        image = image_sub.get_image()
+        if image is None:
             rate.sleep();
             continue
 
-        client.send_image(images[0])
-        client.send_image(images[1])
+        client.send_image(image)
         cnt += 1
 
         if cnt == NUM_STEP:
