@@ -20,7 +20,7 @@ typedef cv::Point3_<uint8_t> Pixel;
  * @handle NodeHandle object in ros platform
  */
 UsbCamera::UsbCamera(ros::NodeHandle& handle)
-	: nh(handle), stop(false), cap1(NULL), cap2(NULL), isReady(true)
+	: nh(handle), stop(false), cap, isReady(true)
 {
 
 }
@@ -31,8 +31,7 @@ UsbCamera::UsbCamera(ros::NodeHandle& handle)
 UsbCamera::~UsbCamera()
 {
 	// free opencv camera object
-	delete cap1;
-	delete cap2;
+	delete cap;
 }
 
 /**
@@ -201,7 +200,7 @@ Valuable UsbCamera::isValuableFrame(cv::Mat& frame)
 {
 
 	cv::Mat curFrame;
-	frame1.copyTo(curFrame);
+	frame.copyTo(curFrame);
 
 	bool valuable = isValuableFrameOnInitialFrame(curFrame, initial_frame);
 
