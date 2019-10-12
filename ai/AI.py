@@ -40,7 +40,7 @@ class AI():
         """
         Arguments:
         ----------
-        :x images, shaped of (1, 8, 3, HEIGHT, WIDTH)
+        :x images, shaped of (1, 8, 6, HEIGHT, WIDTH)
         """
 
         with torch.no_grad():

@@ -50,14 +50,17 @@ void UsbCamera::init()
 	cam_done_serv_server = nh.advertiseService("camera_ready", &UsbCamera::readyService, this);
 
 	// open 2 cameras.
-	cap = new cv::VideoCapture(0);
+	cap1 = new cv::VideoCapture(0);
+	cap2 = new cv::VideoCapture(1);
 
 	// input initial image from 2 cameras.
-	cv::Mat temp;
-	*cap >> temp;
+	cv::Mat temp1, temp2;
+	*cap1 >> temp1;
+	*cap2 >> temp2;
 
 	// initialize initial_frame. this is used to detect whether there is trash in the box.
-	cv::resize(temp, initial_frame, cv::Size(HEIGHT, WIDTH));
+	cv::resize(temp1, initial_frame1, cv::Size(HEIGHT, WIDTH));
+	cv::resize(temp2, initial_frame2, cv::Size(HEIGHT, WIDTH));
 
 	ROS_INFO("UsbCamera node is starting...");
 }
@@ -123,7 +126,7 @@ void UsbCamera::compute()
 	static int send_count = 0;
 
 	// if some error in opening cameras, terminates.
-	if (!cap->isOpened()) {
+	if (!cap1->isOpened() || !cap2-?isOpened()) {
 		ROS_ERROR("CANNOT open camera");
 		finalize();
 		return;
@@ -134,22 +137,24 @@ void UsbCamera::compute()
 		return;
 
 	// image matrices
-	cv::Mat frame;
-	cv::Mat bgrFrame;
-	cv::Mat temp;
+	cv::Mat frame1, frame2;
+	cv::Mat bgrFrame1, bgrFrame2;
+	cv::Mat temp1, temp2;
 
 	// capture images.
-	*cap >> frame;
+	*cap1 >> frame1;
+	*cap2 >> frame2;
 
 	// resize image into (HEIGHT, WIDTH)
-	cv::resize(frame, bgrFrame, cv::Size(HEIGHT, WIDTH));
+	cv::resize(frame1, bgrFrame1, cv::Size(HEIGHT, WIDTH));
+	cv::resize(frame2, bgrFrame2, cv::Size(HEIGHT, WIDTH));
 
 	// compute the valuabilities of frames.
-	Valuable valuable = isValuableFrame(bgrFrame);
+	Valuable valuable = isValuableFrame(bgrFrame1, bgrFrame2);
 
 	// if valuable, send images to other node
 	if (isReady && (send_count > 0 || valuable == Valuable::HIGH)) {
-		publish(bgrFrame);
+		publish(bgrFrame1, bgrFrame2);
 		send_count += 1;
 		if (send_count == 8) {
 			send_count = 0;
@@ -158,7 +163,7 @@ void UsbCamera::compute()
 	}
 	// update initial frame
 	else if (valuable == Valuable::LOW) {
-		updateInitialFrame(bgrFrame);
+		updateInitialFrame(bgrFrame1, bgrFrame2);
 	}
 }
 
@@ -170,7 +175,7 @@ void UsbCamera::compute()
  * @frame1 frame from first camera
  * @frame2 frame from second camera
  */
-void UsbCamera::publish(cv::Mat& frame)
+void UsbCamera::publish(cv::Mat& frame1, cv::Mat& frame2)
 {
 	std_msgs::UInt8MultiArray msg;
 
@@ -178,10 +183,17 @@ void UsbCamera::publish(cv::Mat& frame)
 	msg.data.resize(SIZE);
 
 	// construct message object
-	memcpy(msg.data.data(), frame.data, SIZE);
+	memcpy(msg.data.data(), frame1.data, SIZE);
 
 	// publishing 
-	ROS_INFO("Publishing...");
+	ROS_INFO("Publishing 1...");
+	pub.publish(msg);
+
+	// construct message object
+	memcpy(msg.data.data(), frame2.data, SIZE);
+
+	// publishing 
+	ROS_INFO("Publishing 2...");
 	pub.publish(msg);
 }
 
@@ -197,18 +209,22 @@ void UsbCamera::waitForDone()
  * classify the frame really contains a trash, using gaussian distance
  * 진짜 쓰레기를 찍은 프레임인지 판단. 벡터 거리 이용
  */
-Valuable UsbCamera::isValuableFrame(cv::Mat& frame)
+Valuable UsbCamera::isValuableFrame(cv::Mat& frame1, cv::Mat& frame2)
 {
 
-	cv::Mat curFrame;
-	frame1.copyTo(curFrame);
+	cv::Mat curFrame1, curFame2;
+	frame1.copyTo(curFrame1);
+	frame2.copyTo(curFrame2);
 
-	bool valuable = isValuableFrameOnInitialFrame(curFrame, initial_frame);
+	bool valuable1 = isValuableFrameOnInitialFrame(curFrame1, initial_frame1);
+	bool valuable2 = isValuableFrameOnInitialFrame(curFrame2, initial_frame2);
 
-	if (valuable)
+	if (valuable1 && valuable2)
 		return Valuable::HIGH;
-	else
+	else if (!valuable1 && !valuable2)
 		return Valuable::LOW;
+	else
+		return Valuable::MIDDLE
 }
 
 bool UsbCamera::isValuableFrameOnInitialFrame(cv::Mat& curFrame, cv::Mat& initial_frame)
@@ -251,9 +267,10 @@ bool UsbCamera::isValuableFrameOnInitialFrame(cv::Mat& curFrame, cv::Mat& initia
  * update initial_frame
  * 초기 프레임을 업데이트
  */
-void UsbCamera::updateInitialFrame(cv::Mat& frame)
+void UsbCamera::updateInitialFrame(cv::Mat& frame1, cv::Mat& frame2)
 {
 	for (int i = 0; i < SIZE; i += 1) {
-		initial_frame.data[i] = (unsigned char)((float)initial_frame.data[i] * 0.9f + (float)frame.data[i] * 0.1f);
+		initial_frame1.data[i] = (unsigned char)((float)initial_frame1.data[i] * 0.9f + (float)frame1.data[i] * 0.1f);
+		initial_frame2.data[i] = (unsigned char)((float)initial_frame2.data[i] * 0.9f + (float)frame2.data[i] * 0.1f);
 	}
 }

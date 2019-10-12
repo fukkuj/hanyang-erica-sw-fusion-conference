@@ -48,5 +48,5 @@ class ImageSubscriber():
         self.image_data.append(image.reshape(HEIGHT, WIDTH, CHANNEL))
         self.cnt += 1
 
-        if self.cnt == 8:
+        if self.cnt == 8*2:
             self.ready = False

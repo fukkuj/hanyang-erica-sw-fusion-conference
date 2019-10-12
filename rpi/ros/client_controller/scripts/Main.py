@@ -116,7 +116,7 @@ def main(argv):
         client.send_image(image)
         cnt += 1
 
-        if cnt == NUM_STEP:
+        if cnt == NUM_STEP*2:
             wait_for_result = True
             client.ready = False
 
