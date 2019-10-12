@@ -20,6 +20,7 @@ class TrashClassifier(nn.Module):
         if fine_tune is False:
             for param in self.ae.parameters():
                 param.requires_grad_(False)
+        self.ae.eval()
 
         # construct second feature extractor.
         self.features = nn.Sequential(

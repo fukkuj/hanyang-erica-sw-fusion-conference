@@ -13,7 +13,7 @@ AE_CLF_CKPT_PATH = "./ai/ckpts/clf_ae.pth"
 DET_CKPT_PATH = "./ai/ckpts/det.pth"
 
 # hyper parameters
-BATCH_SIZE = 32
+BATCH_SIZE = 26
 # BATCH_SIZE = 6
 ETA = 1e-3
 EPOCHS = 100
@@ -21,7 +21,7 @@ EPOCHS = 100
 # image information
 HEIGHT = 128
 WIDTH = 128
-IN_CHANNEL = 3
+IN_CHANNEL = 6
 
 CONTRACTIVE_AE_LAMBDA = 1e-2
 
