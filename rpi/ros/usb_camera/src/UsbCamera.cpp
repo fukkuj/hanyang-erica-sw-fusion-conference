@@ -51,7 +51,7 @@ void UsbCamera::init()
 
 	// open 2 cameras.
 	cap1 = new cv::VideoCapture(0);
-	cap2 = new cv::VideoCapture(1);
+	cap2 = new cv::VideoCapture(2);
 
 	// input initial image from 2 cameras.
 	cv::Mat temp1, temp2;
@@ -100,7 +100,7 @@ bool UsbCamera::isWaiting()
  * 서비스 형태의 메시지를 보낼 것이다. 서비스를 받고, 이 메소드를 호출하게 되는데, 다음 쓰레기를 처리하기 위해 카메라를 resume한다.
  */
 bool UsbCamera::readyService(std_srvs::SetBool::Request& req,
-			     			 std_srvs::SetBool::Response& res)
+			     std_srvs::SetBool::Response& res)
 {
 	ROS_INFO("Camera Done");
 
@@ -126,7 +126,7 @@ void UsbCamera::compute()
 	static int send_count = 0;
 
 	// if some error in opening cameras, terminates.
-	if (!cap1->isOpened() || !cap2-?isOpened()) {
+	if (!cap1->isOpened() || !cap2->isOpened()) {
 		ROS_ERROR("CANNOT open camera");
 		finalize();
 		return;
@@ -177,24 +177,20 @@ void UsbCamera::compute()
  */
 void UsbCamera::publish(cv::Mat& frame1, cv::Mat& frame2)
 {
-	std_msgs::UInt8MultiArray msg;
+	std_msgs::UInt8MultiArray msg1, msg2;
 
 	// resize message object to accomodate frame size
-	msg.data.resize(SIZE);
+	msg1.data.resize(SIZE);
+	msg2.data.resize(SIZE);
 
 	// construct message object
-	memcpy(msg.data.data(), frame1.data, SIZE);
+	memcpy(msg1.data.data(), frame1.data, SIZE);
+	memcpy(msg2.data.data(), frame2.data, SIZE);
 
 	// publishing 
-	ROS_INFO("Publishing 1...");
-	pub.publish(msg);
-
-	// construct message object
-	memcpy(msg.data.data(), frame2.data, SIZE);
-
-	// publishing 
-	ROS_INFO("Publishing 2...");
-	pub.publish(msg);
+	ROS_INFO("Publishing...");
+	pub.publish(msg1);
+	pub.publish(msg2);
 }
 
 /*
@@ -212,7 +208,7 @@ void UsbCamera::waitForDone()
 Valuable UsbCamera::isValuableFrame(cv::Mat& frame1, cv::Mat& frame2)
 {
 
-	cv::Mat curFrame1, curFame2;
+	cv::Mat curFrame1, curFrame2;
 	frame1.copyTo(curFrame1);
 	frame2.copyTo(curFrame2);
 
@@ -221,10 +217,10 @@ Valuable UsbCamera::isValuableFrame(cv::Mat& frame1, cv::Mat& frame2)
 
 	if (valuable1 && valuable2)
 		return Valuable::HIGH;
-	else if (!valuable1 && !valuable2)
-		return Valuable::LOW;
+	else if (valuable1 || valuable2)
+		return Valuable::MIDDLE;
 	else
-		return Valuable::MIDDLE
+		return Valuable::LOW;
 }
 
 bool UsbCamera::isValuableFrameOnInitialFrame(cv::Mat& curFrame, cv::Mat& initial_frame)
@@ -270,7 +266,7 @@ bool UsbCamera::isValuableFrameOnInitialFrame(cv::Mat& curFrame, cv::Mat& initia
 void UsbCamera::updateInitialFrame(cv::Mat& frame1, cv::Mat& frame2)
 {
 	for (int i = 0; i < SIZE; i += 1) {
-		initial_frame1.data[i] = (unsigned char)((float)initial_frame1.data[i] * 0.9f + (float)frame1.data[i] * 0.1f);
-		initial_frame2.data[i] = (unsigned char)((float)initial_frame2.data[i] * 0.9f + (float)frame2.data[i] * 0.1f);
+		initial_frame1.data[i] = (unsigned char)((float)initial_frame1.data[i] * 0.95f + (float)frame1.data[i] * 0.05f);
+		initial_frame2.data[i] = (unsigned char)((float)initial_frame2.data[i] * 0.95f + (float)frame2.data[i] * 0.05f);
 	}
 }

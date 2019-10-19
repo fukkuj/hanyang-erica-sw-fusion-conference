@@ -24,14 +24,20 @@ class ImageSubscriber():
         self.image_data = []
         self.ready = True
         self.cnt = 0
+        
+        self.two = False
 
     def get_image(self):
-        if len(self.image_data) == 0:
+        if self.two is False:
+            return None
+        
+        if len(self.image_data) < 2:
             return None
 
-        img = self.image_data.pop(0)
+        img1 = self.image_data.pop(0)
+        img2 = self.image_data.pop(0)
         
-        return img
+        return img1, img2
 
     def image_callback(self, data):
 
@@ -48,5 +54,10 @@ class ImageSubscriber():
         self.image_data.append(image.reshape(HEIGHT, WIDTH, CHANNEL))
         self.cnt += 1
 
-        if self.cnt == 8*2:
+        if self.cnt == 16:
             self.ready = False
+            
+        if len(self.image_data) >= 2:
+            self.two = True
+        else:
+            self.two = False

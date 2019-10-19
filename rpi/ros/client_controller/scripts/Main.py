@@ -36,20 +36,25 @@ def motor_control(result, control_queue):
     if result == -1:
         return
     elif result == 0:
+        return
         control_queue.append([BOX_MOTOR, 0, 1150])
         control_queue.append([SUPPORT_MOTOR, 0, 700])
         control_queue.append([SUPPORT_MOTOR, 1, 720])
         control_queue.append([BOX_MOTOR, 1, 1150])
     elif result == 1:
+        return
         control_queue.append([BOX_MOTOR, 0, 0])
         control_queue.append([SUPPORT_MOTOR, 0, 700])
         control_queue.append([SUPPORT_MOTOR, 1, 720])
         control_queue.append([BOX_MOTOR, 1, 0])
     elif result == 2:
+        return
         control_queue.append([BOX_MOTOR, 1, 1150])
         control_queue.append([SUPPORT_MOTOR, 0, 700])
         control_queue.append([SUPPORT_MOTOR, 1, 720])
         control_queue.append([BOX_MOTOR, 0, 1150])
+    elif result == 3:
+        return
     else:
         rospy.loginfo("INVALID result " + str(result))
         return
@@ -58,7 +63,7 @@ def main(argv):
     global result
     global ok
 
-    rospy.init_node("client_controller", anonymous=False)
+    rospy.init_node("client_controller", anonymous=True)
 
     client = Client()
     if client.connect(HOST, PORT) is False:
@@ -108,15 +113,16 @@ def main(argv):
             rate.sleep()
             continue
 
-        image = image_sub.get_image()
-        if image is None:
+        images = image_sub.get_image()
+        if images is None:
             rate.sleep();
             continue
 
-        client.send_image(image)
+        client.send_image(images[0])
+        client.send_image(images[1])
         cnt += 1
 
-        if cnt == NUM_STEP*2:
+        if cnt == NUM_STEP:
             wait_for_result = True
             client.ready = False
 

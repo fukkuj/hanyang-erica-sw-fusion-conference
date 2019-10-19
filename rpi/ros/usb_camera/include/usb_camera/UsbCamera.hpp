@@ -56,7 +56,7 @@ private:
 	cv::Mat initial_frame1, initial_frame2;		// initial frames. this is used to detect whether a trash is really in the box.
 
 	bool readyService(std_srvs::SetBool::Request& req,
-			  		  std_srvs::SetBool::Response& res);
+			  std_srvs::SetBool::Response& res);
 	Valuable isValuableFrame(cv::Mat& frame1, cv::Mat& frame2);
 	void publish(cv::Mat& frame1, cv::Mat& frame2);
 	void updateInitialFrame(cv::Mat& frame1, cv::Mat& frame2);
