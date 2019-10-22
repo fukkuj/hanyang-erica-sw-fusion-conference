@@ -11,10 +11,10 @@ def main():
     train_loader = DataLoader(TRASH_TRAIN_DATA_PATH, TRASH_CAT, noise=True)
     valid_loader = DataLoader(TRASH_VALID_DATA_PATH, TRASH_CAT, noise=True)
 
-    model = nn.DataParallel(Classifier()).cuda()
+    model = Classifier().cuda()
 
     optimizer = optim.Adam(model.parameters(), lr=1e-3)
-    criteiron = nn.NLLLoss()
+    criterion = nn.NLLLoss()
 
     top_valid_acc = 0.0
 
@@ -22,7 +22,7 @@ def main():
     train_acc = 0.0
 
     for e in range(EPOCHS):
-        for x, y in train_loader:
+        for x, y in train_loader.next_batch():
             x = torch.FloatTensor(x).cuda()
             y = torch.LongTensor(y).cuda()
 
@@ -33,7 +33,7 @@ def main():
             with torch.no_grad():
                 ps = torch.exp(logps)
                 val_k, top_k = ps.topk(1, dim=-1)
-                equality = topk == y.view(*topk.size())
+                equality = top_k == y.view(*top_k.size())
                 train_acc += torch.mean(equality.type(torch.FloatTensor))
 
             optimizer.zero_grad()
@@ -43,13 +43,13 @@ def main():
         train_loss /= len(train_loader)
         train_acc /= len(train_loader)
 
-        with torch.no.grad():
+        with torch.no_grad():
             valid_loss = 0.0
             valid_acc = 0.0
 
             model.eval()
 
-            for x, y in valid_loader:
+            for x, y in valid_loader.next_batch():
                 x = torch.FloatTensor(x).cuda()
                 y = torch.LongTensor(y).cuda()
 
@@ -75,7 +75,7 @@ def main():
 
         if top_valid_acc < valid_acc:
             top_valid_acc = valid_acc
-            model.module.save(CLF_CKPT_PATH)
+            model.save(CNN_CLF_CKPT_PATH)
 
-if __name__ == __main__:
+if __name__ == "__main__":
     main()

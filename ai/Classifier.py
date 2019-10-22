@@ -50,7 +50,7 @@ class Classifier(nn.Module):
         n_s = x.size(1)
         n = n_b * n_s
 
-        x = x.view(n, 3, 128, 128)
+        x = x.view(n, 6, 128, 128)
 
         # print(self.features(x))
         x, _ = self.features(x)
