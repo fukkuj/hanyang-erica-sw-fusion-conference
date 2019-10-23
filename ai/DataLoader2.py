@@ -168,10 +168,21 @@ class DataLoader():
         image = image.resize((WIDTH, HEIGHT))
         
         # random translation
-        if np.random.rand() < 0.4:
-            x_offset = np.random.randint(0, 10)
-            y_offset = np.random.randint(0, 10)
-            image = ImageChops.offset(image, x_offset, y_offset)
+        #if np.random.rand() < 0.4:
+        #    x_offset = np.random.randint(0, 10)
+        #    y_offset = np.random.randint(0, 10)
+        #    image = ImageChops.offset(image, x_offset, y_offset)
+            
+        if np.random.rand() < 0.5:
+            image.transpose(Image.FLIP_LEFT_RIGHT)
+        if np.random.rand() < 0.5:
+            image.transpose(Image.FLIP_TOP_BOTTOM)
+        if np.random.rand() < 0.2:
+            image.transpose(Image.ROTATE_90)
+        if np.random.rand() < 0.2:
+            image.transpose(Image.ROTATE_180)
+        if np.random.rand() < 0.2:
+            image.transpose(Image.ROTATE_270)
             
         # random rotation
         # if np.random.rand() < 0.4:
