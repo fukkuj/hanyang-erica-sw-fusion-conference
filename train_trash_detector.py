@@ -12,14 +12,14 @@ from ai.TrashDetector import TrashDetector
 from ai.DataLoader2 import DataLoader
 from env import *
 
-ETA = 1e-3
-EPOCHS = 300
+ETA = 1e-5
+EPOCHS = 30
 
 train_dloader = DataLoader(DETECTOR_TRAIN_DATA_PATH, DETECTOR_CAT, noise=True)
 valid_dloader = DataLoader(DETECTOR_VALID_DATA_PATH, DETECTOR_CAT, noise=True)
 
-model = TrashDetector()
-model.load(DET_CKPT_PATH)
+model = TrashDetector(fine_tune=True)
+# model.load(DET_CKPT_PATH)
 model = nn.DataParallel(model).cuda()
 
 optimizer = optim.Adam(model.parameters(), lr=ETA)

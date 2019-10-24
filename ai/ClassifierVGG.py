@@ -6,11 +6,12 @@ import numpy as np
 
 class ClassifierVGG(nn.Module):
 
-    def __init__(self):
+    def __init__(self, fine_tune=False):
         super().__init__()
 
         self.features = FeatureVGG()
-        self.features.requires_grad_(False)
+        self.features.requires_grad_(fine_tune)
+        self.features.eval()
 
         # self.lstm = nn.LSTM(
         #     4*4*1024,
@@ -22,11 +23,21 @@ class ClassifierVGG(nn.Module):
         # )
 
         self.conv = nn.Sequential(
-            nn.Conv1d(8, 32, (121,), stride=32, padding=0)
+            nn.Conv1d(8, 32, (121,), stride=16, padding=0), # 1017
+            nn.BatchNorm1d(32),
+            nn.Tanh(),
+
+            nn.Conv1d(32, 64, (55,), stride=8, padding=0), # 121
+            nn.BatchNorm1d(64),
+            nn.Tanh(),
+
+            nn.Conv1d(64, 128, (13,), stride=2, padding=0), # 55
+            nn.BatchNorm1d(128),
+            nn.Tanh(),
         )
 
         self.classifier = nn.Sequential(
-            nn.Linear(32*8*2, 32),
+            nn.Linear(55*128, 32),
             nn.Tanh(),
             nn.Dropout(0.4),
 
@@ -48,10 +59,14 @@ class ClassifierVGG(nn.Module):
 
         x = self.features(x)
 
-        res_out, res_hidden = self.lstm(x)
-        res_out = res_out.contiguous()
-        res_out = res_out.view(-1, 2 * 8 * 32)
+        # res_out, res_hidden = self.lstm(x)
+        # res_out = res_out.contiguous()
+        # res_out = res_out.view(-1, 2 * 8 * 32)
 
-        x = self.classifier(res_out)
+        # x = self.classifier(res_out)
+
+        x = self.conv(x)
+        x = x.view(x.size(0), -1)
+        x = self.classifier(x)
 
         return x

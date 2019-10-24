@@ -2,6 +2,7 @@ import torch
 import numpy as np
 
 from ai.Classifier import Classifier
+from ai.ClassifierVGG import ClassifierVGG
 from ai.TrashDetector import TrashDetector
 from env import *
 
@@ -19,10 +20,14 @@ class AI():
     def build(self):
 
         print("Building AI module...")
-        self.classifier = Classifier().cuda()
-        self.classifier.load(CNN_CLF_CKPT_PATH)
+        # self.classifier = Classifier().cuda()
+        self.classifier = ClassifierVGG().cuda()
+        self.classifier.load(VGG_CLF_CKPT_PATH)
         self.detector = TrashDetector().cuda()
         self.detector.load(DET_CKPT_PATH)
+
+        self.classifier.eval()
+        self.detector.eval()
 
         if torch.cuda.is_available():
             if torch.cuda.device_count() > 1:
