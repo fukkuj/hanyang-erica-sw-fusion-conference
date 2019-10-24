@@ -1,5 +1,5 @@
 import os
-os.environ["CUDA_VISIBLE_DEVICES"] = "1"
+os.environ["CUDA_VISIBLE_DEVICES"] = "0,1"
 
 import torch
 import torch.nn as nn
@@ -12,19 +12,18 @@ from ai.FeatureCNN import FeatureCNN
 from ai.DataLoader2 import DataLoader
 from env import *
 
-ETA = 1e-2
+ETA = 1e-3
 EPOCHS = 300
 
 train_dloader = DataLoader(TRAIN_DATA_PATH, TRASH_CAT, noise=True)
 valid_dloader = DataLoader(VALID_DATA_PATH, TRASH_CAT, noise=True)
 
 model = FeatureCNN()
-model = model.cuda()
-
-optimizer = optim.Adam(model.parameters(), lr=ETA)
-criterion = nn.NLLLoss()
-
 model.load(CNN_CKPT_PATH)
+model = nn.DataParallel(model).cuda()
+
+optimizer = optim.Adam(model.module.parameters(), lr=ETA)
+criterion = nn.NLLLoss()
 
 top_valid_acc = 0.0
 
@@ -91,7 +90,7 @@ for e in range(EPOCHS):
             
             if top_valid_acc < valid_clf_acc:
                 top_valid_acc = valid_clf_acc
-                model.save(CNN_CKPT_PATH)
+                model.module.save(CNN_CKPT_PATH)
 
             model.train()
         

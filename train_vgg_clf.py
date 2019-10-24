@@ -2,7 +2,7 @@ import torch
 import numpy as np
 
 from torch import nn, optim
-from ai.Classifier import Classifier
+from ai.ClassifierVGG import ClassifierVGG
 from env import *
 from ai.DataLoader import DataLoader
 
@@ -11,8 +11,8 @@ def main():
     train_loader = DataLoader(TRASH_TRAIN_DATA_PATH, TRASH_CAT, noise=True)
     valid_loader = DataLoader(TRASH_VALID_DATA_PATH, TRASH_CAT, noise=True)
 
-    model = Classifier().cuda()
-    model.load(CNN_CLF_CKPT_PATH)
+    model = ClassifierVGG().cuda()
+    # model.load(VGG_CLF_CKPT_PATH)
 
     optimizer = optim.Adam(model.parameters(), lr=1e-3)
     criterion = nn.NLLLoss()
@@ -76,7 +76,7 @@ def main():
 
         if top_valid_acc < valid_acc:
             top_valid_acc = valid_acc
-            model.save(CNN_CLF_CKPT_PATH)
+            model.save(VGG_CLF_CKPT_PATH)
 
 if __name__ == "__main__":
     main()

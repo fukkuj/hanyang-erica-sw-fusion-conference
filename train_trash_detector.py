@@ -19,6 +19,7 @@ train_dloader = DataLoader(DETECTOR_TRAIN_DATA_PATH, DETECTOR_CAT, noise=True)
 valid_dloader = DataLoader(DETECTOR_VALID_DATA_PATH, DETECTOR_CAT, noise=True)
 
 model = TrashDetector()
+model.load(DET_CKPT_PATH)
 model = nn.DataParallel(model).cuda()
 
 optimizer = optim.Adam(model.parameters(), lr=ETA)

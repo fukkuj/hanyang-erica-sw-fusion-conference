@@ -14,22 +14,22 @@ class ClassifierRNN(nn.Module):
         self.hidden_size = 64
 
         self.lstm = nn.LSTM(64*8*8,
-                            hidden_size,
+                            self.hidden_size,
                             2,
                             batch_first=True,
                             bidirectional=True,
                             dropout=0.4)
 
         self.classifier = nn.Sequential(
-            nn.Linear(2 * num_step * hidden_size, 256),
+            nn.Linear(2 * self.num_step * self.hidden_size, 256),
             nn.Tanh(),
-            nn.Dropout(drop_rate),
+            nn.Dropout(0.4),
 
             nn.Linear(256, 64),
             nn.Tanh(),
-            nn.Dropout(drop_rate),
+            nn.Dropout(0.4),
 
-            nn.Linear(64, num_classes),
+            nn.Linear(64, 4),
             nn.LogSoftmax(dim=1)
         )
 
