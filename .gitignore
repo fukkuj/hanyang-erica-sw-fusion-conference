@@ -4,8 +4,9 @@
 **/data/
 **/.vscode/
 **/.ipynb_checkpoints/
-data/*
-data_all/*
+data/
+**/data*/
+data_all/
 **/test
 **/CMakeLists.txt
 **/package.xml

@@ -10,9 +10,9 @@ import threading as th
 import time
 
 #HOST =  "35.229.136.239"
-HOST =  "35.236.168.202"
+#HOST =  "35.236.168.202"
 #HOST = "34.80.12.180"
-#HOST = "192.168.137.1"
+HOST = "192.168.43.150"
 PORT = 13333
 NUM_STEP = 8
 
@@ -37,24 +37,28 @@ def motor_control(result, control_queue):
         return
     elif result == 0:
         return
-        control_queue.append([BOX_MOTOR, 0, 1150])
-        control_queue.append([SUPPORT_MOTOR, 0, 700])
-        control_queue.append([SUPPORT_MOTOR, 1, 720])
-        control_queue.append([BOX_MOTOR, 1, 1150])
+        control_queue.append([BOX_MOTOR, 1, 1650])
+        control_queue.append([SUPPORT_MOTOR, 0, 2000])
+        control_queue.append([SUPPORT_MOTOR, 1, 2020])
+        control_queue.append([BOX_MOTOR, 0, 1700])
     elif result == 1:
         return
-        control_queue.append([BOX_MOTOR, 0, 0])
-        control_queue.append([SUPPORT_MOTOR, 0, 700])
-        control_queue.append([SUPPORT_MOTOR, 1, 720])
-        control_queue.append([BOX_MOTOR, 1, 0])
+        control_queue.append([BOX_MOTOR, 1, 950])
+        control_queue.append([SUPPORT_MOTOR, 0, 2000])
+        control_queue.append([SUPPORT_MOTOR, 1, 2020])
+        control_queue.append([BOX_MOTOR, 0, 1000])
     elif result == 2:
         return
-        control_queue.append([BOX_MOTOR, 1, 1150])
-        control_queue.append([SUPPORT_MOTOR, 0, 700])
-        control_queue.append([SUPPORT_MOTOR, 1, 720])
-        control_queue.append([BOX_MOTOR, 0, 1150])
+        control_queue.append([BOX_MOTOR, 0, 950])
+        control_queue.append([SUPPORT_MOTOR, 0, 2000])
+        control_queue.append([SUPPORT_MOTOR, 1, 2020])
+        control_queue.append([BOX_MOTOR, 1, 900])
     elif result == 3:
         return
+        control_queue.append([BOX_MOTOR, 0, 1750])
+        control_queue.append([SUPPORT_MOTOR, 0, 2000])
+        control_queue.append([SUPPORT_MOTOR, 1, 2020])
+        control_queue.append([BOX_MOTOR, 1, 1700])
     else:
         rospy.loginfo("INVALID result " + str(result))
         return

@@ -24,7 +24,7 @@ class ImageSubscriber():
         self.image_data = []
         self.ready = True
         self.cnt = 0
-        
+
         self.two = False
 
     def get_image(self):
@@ -56,7 +56,7 @@ class ImageSubscriber():
 
         if self.cnt == 16:
             self.ready = False
-            
+
         if len(self.image_data) >= 2:
             self.two = True
         else:

@@ -153,7 +153,8 @@ void UsbCamera::compute()
 	Valuable valuable = isValuableFrame(bgrFrame1, bgrFrame2);
 
 	// if valuable, send images to other node
-	if (isReady && (send_count > 0 || valuable == Valuable::HIGH)) {
+	if ((send_count > 0 && send_count < 8) || valuable == Valuable::HIGH) {
+		
 		publish(bgrFrame1, bgrFrame2);
 		send_count += 1;
 		if (send_count == 8) {

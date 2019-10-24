@@ -28,7 +28,7 @@ private:
 
 	bool is_ready;
 
-	int initial_motor_clock = 2000; // more less,  more faster
+	int initial_motor_clock = 1000; // more less,  more faster
 	int min_motor_clock = 200;
 	int motor_speed_up = 1;
 };

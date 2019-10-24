@@ -1,7 +1,7 @@
 import torch
 import numpy as np
 
-from ai.TrashClassifier import TrashClassifier
+from ai.Classifier import Classifier
 from ai.TrashDetector import TrashDetector
 from env import *
 
@@ -19,8 +19,8 @@ class AI():
     def build(self):
 
         print("Building AI module...")
-        self.classifier = TrashClassifier().cuda()
-        self.classifier.load(AE_CLF_CKPT_PATH)
+        self.classifier = Classifier().cuda()
+        self.classifier.load(CNN_CLF_CKPT_PATH)
         self.detector = TrashDetector().cuda()
         self.detector.load(DET_CKPT_PATH)
 
@@ -62,7 +62,7 @@ class AI():
 
         print(ps)
         
-        ratio = ps[:, 1] > 0.30
+        ratio = ps[:, 1] > 0.95
         ratio = torch.mean(ratio.type(torch.FloatTensor))
         
         # if 6 or more pictures have trash,
