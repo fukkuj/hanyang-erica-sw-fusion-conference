@@ -7,3 +7,5 @@ data/*
 **/test
 **/CMakeLists.txt
 **/package.xml
+**/data/
+**/data*/
