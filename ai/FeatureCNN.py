@@ -12,6 +12,7 @@ class FeatureCNN(nn.Module):
     def __init__(self):
         super(FeatureCNN, self).__init__()
 
+        '''
         # feature extractor 1 with 3x3 filters
         self.cnn1 = nn.Sequential(
             # 3 x 128 x 128 -> 32 x 128 x 128
@@ -92,6 +93,82 @@ class FeatureCNN(nn.Module):
             nn.LeakyReLU(),
             
             nn.Linear(32, 4),
+            nn.LogSoftmax(dim=1)
+        )
+        '''
+        
+        # feature extractor 1 with 3x3 filters
+        self.cnn1 = nn.Sequential(
+            # 3 x 128 x 128 -> 32 x 128 x 128
+            nn.Conv2d(IN_CHANNEL, 32, (3, 3), stride=1, padding=1),
+            nn.BatchNorm2d(32),
+            nn.Tanh(),
+
+            # 32 x 128 x 128 -> 32 x 64 x 64
+            nn.MaxPool2d((2, 2), stride=2, padding=0),
+
+            # 32 x 64 x 64 -> 32 x 64 x 64
+            nn.Conv2d(32, 32, (3, 3), stride=1, padding=1),
+            nn.BatchNorm2d(32),
+            nn.Tanh(),
+            
+            # 32 x 64 x 64 -> 32 x 32 x 32
+            nn.MaxPool2d((2, 2), stride=2, padding=0), # 
+
+            # 32 x 32 x 32 -> 32 x 32 x 32
+            nn.Conv2d(32, 32, (3, 3), stride=1, padding=1),
+            nn.BatchNorm2d(32),
+            nn.Tanh(),
+            
+            # 32 x 32 x 32 -> 32 x 16 x 16
+            nn.MaxPool2d((2, 2), stride=2, padding=0),
+
+            # 32 x 16 x 16 -> 32 x 16 x 16
+            nn.Conv2d(32, 32, (3, 3), stride=1, padding=1),
+            nn.BatchNorm2d(32),
+            nn.Tanh(),
+            
+            # 32 x 16 x 16 -> 32 x 8 x 8
+            nn.MaxPool2d((2, 2), stride=2, padding=0),
+        )
+
+        # feature extractor 2 with 7x7 filters
+        self.cnn2 = nn.Sequential(
+            # 3 x 128 x 128 -> 32 x 128 x 128
+            nn.Conv2d(IN_CHANNEL, 32, (7, 7), stride=1, padding=3),
+            nn.BatchNorm2d(32),
+            nn.Tanh(),
+            
+            # 32 x 128 x 128 -> 32 x 64 x 64
+            nn.MaxPool2d((2, 2), stride=2, padding=0),
+
+            # 32 x 64 x 64 -> 32 x 64 x 64
+            nn.Conv2d(32, 32, (7, 7), stride=1, padding=3),
+            nn.BatchNorm2d(32),
+            nn.Tanh(),
+            
+            # 32 x 64 x 64 -> 32 x 32 x 32
+            nn.MaxPool2d((2, 2), stride=2, padding=0),
+
+            # 32 x 32 x 32 -> 32 x 32 x 32
+            nn.Conv2d(32, 32, (7, 7), stride=1, padding=3),
+            nn.BatchNorm2d(32),
+            nn.Tanh(),
+            
+            # 32 x 32 x 32 -> 32 x 16 x 16
+            nn.MaxPool2d((2, 2), stride=2, padding=0),
+
+            # 32 x 16 x 16 -> 32 x 16 x 16
+            nn.Conv2d(32, 32, (7, 7), stride=1, padding=3),
+            nn.BatchNorm2d(32),
+            nn.Tanh(),
+            
+            # 32 x 16 x 16 -> 32 x 8 x 8
+            nn.MaxPool2d((2, 2), stride=2, padding=0),
+        )
+        
+        self.classifier = nn.Sequential(
+            nn.Linear(64*8*8, 4),
             nn.LogSoftmax(dim=1)
         )
 
