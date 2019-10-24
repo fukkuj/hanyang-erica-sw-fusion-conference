@@ -14,7 +14,7 @@ int main(int argc, char* argv[])
 	StepperMotor motor(nh);
 	motor.Setup();
 
-	ros::Rate rate(10);
+	ros::Rate rate(100);
 
 	while (ros::ok()) {
 		rate.sleep();
