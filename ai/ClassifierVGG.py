@@ -12,13 +12,17 @@ class ClassifierVGG(nn.Module):
         self.features = FeatureVGG()
         self.features.requires_grad_(False)
 
-        self.lstm = nn.LSTM(
-            4*4*1024,
-            32,
-            2,
-            batch_first=True,
-            bidirectional=True,
-            dropout=0.4
+        # self.lstm = nn.LSTM(
+        #     4*4*1024,
+        #     32,
+        #     2,
+        #     batch_first=True,
+        #     bidirectional=True,
+        #     dropout=0.4
+        # )
+
+        self.conv = nn.Sequential(
+            nn.Conv1d(8, 32, (121,), stride=32, padding=0)
         )
 
         self.classifier = nn.Sequential(

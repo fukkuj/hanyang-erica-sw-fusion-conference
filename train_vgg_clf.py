@@ -12,7 +12,7 @@ def main():
     valid_loader = DataLoader(TRASH_VALID_DATA_PATH, TRASH_CAT, noise=True)
 
     model = ClassifierVGG().cuda()
-    # model.load(VGG_CLF_CKPT_PATH)
+    model.load(VGG_CLF_CKPT_PATH)
 
     optimizer = optim.Adam(model.parameters(), lr=1e-3)
     criterion = nn.NLLLoss()
