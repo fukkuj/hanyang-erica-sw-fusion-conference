@@ -168,7 +168,15 @@ class FeatureCNN(nn.Module):
         )
         
         self.classifier = nn.Sequential(
-            nn.Linear(64*8*8, 4),
+            nn.Linear(64*8*8, 64),
+            nn.Dropout(0.4),
+            nn.LeakyReLU(),
+
+            nn.Linear(64, 32),
+            nn.Dropout(0.4),
+            nn.LeakyReLU(),
+
+            nn.Linear(32, 4),
             nn.LogSoftmax(dim=1)
         )
 

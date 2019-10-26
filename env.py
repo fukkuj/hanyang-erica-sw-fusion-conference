@@ -9,12 +9,10 @@ TRASH_DATA_ALL_PATH = "./data/trash_collecting_all"
 
 AE_CKPT_PATH = "./ai/ckpts/ae.pth"
 CNN_CKPT_PATH = "./ai/ckpts/fcnn.pth"
-CNN2_CKPT_PATH = "./ai2/ckpts/fcnn.pth"
 CNN_CLF_CKPT_PATH = "./ai/ckpts/clf_cnn.pth"
 VGG_CLF_CKPT_PATH = "./ai/ckpts/clf_vgg.pth"
 AE_CLF_CKPT_PATH = "./ai/ckpts/clf_ae.pth"
 DET_CKPT_PATH = "./ai/ckpts/det.pth"
-DET2_CKPT_PATH = "./ai2/ckpts/det.pth"
 
 # hyper parameters
 BATCH_SIZE = 8

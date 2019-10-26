@@ -58,7 +58,7 @@ class TrashDetector(nn.Module):
 
         # construct classifier
         self.classifier = nn.Sequential(
-            nn.Linear(8*8*32, 32),
+            nn.Linear(8*8*64, 32),
             nn.LeakyReLU(),
             nn.Dropout(0.5),
 
@@ -104,9 +104,9 @@ class TrashDetector(nn.Module):
         # retrieve number of images
         n = x.size(0)
         
-        # x = self.features(x)
-        # x = x.view(n, -1)
-        # x = self.classifier(x)
+        x, _ = self.features(x)
+        x = x.view(n, -1)
+        x = self.classifier(x)
 
         # x1 = self.features(x[:, :3])
         # x2 = self.features(x[:, 3:])

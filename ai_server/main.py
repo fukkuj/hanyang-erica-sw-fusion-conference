@@ -65,8 +65,8 @@ def main(args):
                     continue
 
                 if burn_in < num_step:
-                    cnt += 1
                     burn_in += 1
+                    cnt += 1
                     continue
 
                 # print(image_bgr.shape)
@@ -81,14 +81,16 @@ def main(args):
 
                 image_arr[0, cnt, :3] = image_rgb1.transpose(2, 0, 1).astype(np.float32)
                 image_arr[0, cnt, 3:] = image_rgb2.transpose(2, 0, 1).astype(np.float32)
-                cnt += 1
 
+                cnt += 1
+                burn_in += 1
+                
                 image_rgb1 = None
                 image_rgb2 = None
                 image_bgr1 = None
                 image_bgr2 = None
-                burn_in += 1
 
+            
             if burn_in == 2*num_step:
                 result = ai.predict(image_arr)
                 print("Result: {}".format(trash_map[result]))
@@ -97,6 +99,13 @@ def main(args):
                 burn_in = 0
             elif burn_in == num_step:
                 server.send_result(-1)
+            
+                
+            #result = ai.predict(image_arr)
+            #print("Result: {}".format(trash_map[result]))
+
+            #server.send_result(result)
+
 
     except KeyboardInterrupt as e:
         print(e)
@@ -110,8 +119,6 @@ def main(args):
         print(e)
         print("Exception occurs. Server shutdown.")
     
-    except:
-        pass
 
     server.close()
     ok = False

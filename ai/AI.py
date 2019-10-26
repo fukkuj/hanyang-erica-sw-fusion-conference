@@ -22,9 +22,9 @@ class AI():
         print("Building AI module...")
         # self.classifier = Classifier().cuda()
         self.classifier = ClassifierVGG().cuda()
-        self.classifier.load("./ai/ckpts_final/clf_vgg.pth")
+        self.classifier.load(VGG_CLF_CKPT_PATH)
         self.detector = TrashDetector().cuda()
-        self.detector.load("./ai/ckpts_final/det.pth")
+        self.detector.load(DET_CKPT_PATH)
 
         self.classifier.eval()
         self.detector.eval()
@@ -65,9 +65,10 @@ class AI():
         logps = self.detector(x)
         ps = torch.exp(logps)
 
+        print(ps.size())
         print(ps)
         
-        ratio = ps[:, 1] > 0.95
+        ratio = ps[:, 1] > 0.8
         ratio = torch.mean(ratio.type(torch.FloatTensor))
         
         # if 6 or more pictures have trash,
