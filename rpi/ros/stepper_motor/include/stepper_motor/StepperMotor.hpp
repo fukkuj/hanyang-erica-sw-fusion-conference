@@ -28,8 +28,8 @@ private:
 
 	bool is_ready;
 
-	int initial_motor_clock = 2000; // more less,  more faster
-	int min_motor_clock = 200;
+	int box_motor_clock = 1500;
+	int support_motor_clock = 500;
 	int motor_speed_up = 1;
 };
 

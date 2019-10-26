@@ -14,7 +14,7 @@ int main(int argc, char* argv[])
 	StepperMotor motor(nh);
 	motor.Setup();
 
-	ros::Rate rate(10);
+	ros::Rate rate(100);
 
 	while (ros::ok()) {
 		rate.sleep();
@@ -33,16 +33,13 @@ void setWiringPi()
 	pinMode(BOX_MOTOR_ENABLE, OUTPUT);
 	pinMode(SUPPORT_MOTOR_ENABLE, OUTPUT);
 
-	pinMode(BOX_MOTOR_CLK, OUTPUT);
-	pinMode(BOX_MOTOR_DIR, OUTPUT);
+	pinMode(BOX_LEFT_MOTOR_CLK, OUTPUT);
+	pinMode(BOX_RIGHT_MOTOR_CLK, OUTPUT);
+	pinMode(BOX_LEFT_MOTOR_DIR, OUTPUT);
+	pinMode(BOX_RIGHT_MOTOR_DIR, OUTPUT);
 
-	pinMode(SUPPORT_MOTOR_CLK, OUTPUT);
+	pinMode(SUPPORT_LEFT_MOTOR_CLK, OUTPUT);
+	pinMode(SUPPORT_RIGHT_MOTOR_CLK, OUTPUT);
 	pinMode(SUPPORT_LEFT_MOTOR_DIR, OUTPUT);
 	pinMode(SUPPORT_RIGHT_MOTOR_DIR, OUTPUT);
-
-	//pinMode(24, OUTPUT);
-	//pinMode(27, OUTPUT);
-
-	//digitalWrite(24, HIGH);
-	//digitalWrite(27, HIGH);
 }

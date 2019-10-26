@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+	<node name="usb_camera_node" pkg="usb_camera" type="usb_camera_node" output="screen"/>
+	<node name="client_controller" pkg="client_controller" type="Main.py" output="screen"/>
+	<node name="stepper_motor_node" pkg="stepper_motor" type="stepper_motor_node" output="screen"/>
+</launch>

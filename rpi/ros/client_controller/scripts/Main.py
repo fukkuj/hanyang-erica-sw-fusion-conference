@@ -10,9 +10,9 @@ import threading as th
 import time
 
 #HOST =  "35.229.136.239"
-HOST =  "35.236.168.202"
+#HOST =  "35.236.168.202"
 #HOST = "34.80.12.180"
-#HOST = "192.168.137.1"
+HOST = "192.168.43.150"
 PORT = 13333
 NUM_STEP = 8
 
@@ -36,20 +36,25 @@ def motor_control(result, control_queue):
     if result == -1:
         return
     elif result == 0:
-        control_queue.append([BOX_MOTOR, 0, 1150])
-        control_queue.append([SUPPORT_MOTOR, 0, 700])
-        control_queue.append([SUPPORT_MOTOR, 1, 720])
-        control_queue.append([BOX_MOTOR, 1, 1150])
+        control_queue.append([BOX_MOTOR, 1, 1775])
+        control_queue.append([SUPPORT_MOTOR, 0, 2000])
+        control_queue.append([SUPPORT_MOTOR, 1, 2020])
+        control_queue.append([BOX_MOTOR, 0, 1760])
     elif result == 1:
-        control_queue.append([BOX_MOTOR, 0, 0])
-        control_queue.append([SUPPORT_MOTOR, 0, 700])
-        control_queue.append([SUPPORT_MOTOR, 1, 720])
-        control_queue.append([BOX_MOTOR, 1, 0])
+        control_queue.append([BOX_MOTOR, 1, 950])
+        control_queue.append([SUPPORT_MOTOR, 0, 2000])
+        control_queue.append([SUPPORT_MOTOR, 1, 2020])
+        control_queue.append([BOX_MOTOR, 0, 950])
     elif result == 2:
-        control_queue.append([BOX_MOTOR, 1, 1150])
-        control_queue.append([SUPPORT_MOTOR, 0, 700])
-        control_queue.append([SUPPORT_MOTOR, 1, 720])
-        control_queue.append([BOX_MOTOR, 0, 1150])
+        control_queue.append([BOX_MOTOR, 0, 950])
+        control_queue.append([SUPPORT_MOTOR, 0, 2000])
+        control_queue.append([SUPPORT_MOTOR, 1, 2020])
+        control_queue.append([BOX_MOTOR, 1, 950])
+    elif result == 3:
+        control_queue.append([BOX_MOTOR, 0, 1820])
+        control_queue.append([SUPPORT_MOTOR, 0, 2000])
+        control_queue.append([SUPPORT_MOTOR, 1, 2020])
+        control_queue.append([BOX_MOTOR, 1, 1795])
     else:
         rospy.loginfo("INVALID result " + str(result))
         return
@@ -58,7 +63,7 @@ def main(argv):
     global result
     global ok
 
-    rospy.init_node("client_controller", anonymous=False)
+    rospy.init_node("client_controller", anonymous=True)
 
     client = Client()
     if client.connect(HOST, PORT) is False:
@@ -108,12 +113,13 @@ def main(argv):
             rate.sleep()
             continue
 
-        image = image_sub.get_image()
-        if image is None:
+        images = image_sub.get_image()
+        if images is None:
             rate.sleep();
             continue
 
-        client.send_image(image)
+        client.send_image(images[0])
+        client.send_image(images[1])
         cnt += 1
 
         if cnt == NUM_STEP:
