@@ -17,7 +17,7 @@ class TrashDetector(nn.Module):
         
         # self.features = nn.Sequential(
         #     # 32 x 128 x 128
-        #     nn.Conv2d(6, 16, (9, 9), stride=1, padding=4),
+        #     nn.Conv2d(6, 16, (5, 5), stride=1, padding=2),
         #     nn.BatchNorm2d(16),
         #     nn.LeakyReLU(),
             
@@ -25,7 +25,7 @@ class TrashDetector(nn.Module):
         #     nn.MaxPool2d((2, 2), stride=2, padding=0),
             
         #     # 64 x 64 x 64
-        #     nn.Conv2d(16, 16, (9, 9), stride=1, padding=4),
+        #     nn.Conv2d(16, 16, (5, 5), stride=1, padding=2),
         #     nn.BatchNorm2d(16),
         #     nn.LeakyReLU(),
             
@@ -33,7 +33,7 @@ class TrashDetector(nn.Module):
         #     nn.MaxPool2d((2, 2), stride=2, padding=0),
             
         #     # 128 x 32 x 32
-        #     nn.Conv2d(16, 32, (9, 9), stride=1, padding=4),
+        #     nn.Conv2d(16, 32, (5, 5), stride=1, padding=2),
         #     nn.BatchNorm2d(32),
         #     nn.LeakyReLU(),
             
@@ -41,7 +41,7 @@ class TrashDetector(nn.Module):
         #     nn.MaxPool2d((2, 2), stride=2, padding=0),
             
         #     # 256 x 16 x 16
-        #     nn.Conv2d(32, 32, (9, 9), stride=1, padding=4),
+        #     nn.Conv2d(32, 32, (5, 5), stride=1, padding=2),
         #     nn.BatchNorm2d(32),
         #     nn.LeakyReLU(),
             
@@ -51,42 +51,43 @@ class TrashDetector(nn.Module):
         
         
 
-        # self.features = FeatureCNN()
-        # self.features.load(CNN_CKPT_PATH)
-        # self.features.requires_grad_(False)
-
-        # # construct classifier
-        # self.classifier = nn.Sequential(
-        #     nn.Linear(8*8*64, 32),
-        #     nn.LeakyReLU(),
-        #     nn.Dropout(0.5),
-
-        #     nn.Linear(32, 2),
-        #     nn.LogSoftmax(dim=1)
-        # )
-
-        self.features = vgg11_bn(pretrained=True).features
-        self.features.requires_grad_(fine_tune)
+        self.features = FeatureCNN()
+        self.features.load(CNN_CKPT_PATH)
+        self.features.requires_grad_(False)
         self.fine_tune = fine_tune
 
-        self.conv = nn.Sequential(
-            nn.Conv2d(1024, 1024, (3, 3), stride=2, padding=1),
-            nn.BatchNorm2d(1024),
-            nn.Tanh(),
-
-            nn.Conv2d(1024, 2048, (2, 2), stride=1, padding=0),
-            nn.BatchNorm2d(2048),
-            nn.Tanh()
-        )
-
+        # construct classifier
         self.classifier = nn.Sequential(
-            nn.Linear(2048, 128),
-            nn.Tanh(),
-            nn.Dropout(0.4),
+            nn.Linear(8*8*32, 32),
+            nn.LeakyReLU(),
+            nn.Dropout(0.5),
 
-            nn.Linear(128, 2),
-            nn.LogSoftmax(dim=-1)
+            nn.Linear(32, 2),
+            nn.LogSoftmax(dim=1)
         )
+
+        # self.features = vgg11_bn(pretrained=True).features
+        # self.features.requires_grad_(fine_tune)
+        # self.fine_tune = fine_tune
+
+        # self.conv = nn.Sequential(
+        #     nn.Conv2d(1024, 1024, (3, 3), stride=2, padding=1),
+        #     nn.BatchNorm2d(1024),
+        #     nn.Tanh(),
+
+        #     nn.Conv2d(1024, 1024, (2, 2), stride=1, padding=0),
+        #     nn.BatchNorm2d(1024),
+        #     nn.Tanh()
+        # )
+
+        # self.classifier = nn.Sequential(
+        #     nn.Linear(1024, 128),
+        #     nn.Tanh(),
+        #     nn.Dropout(0.4),
+
+        #     nn.Linear(128, 2),
+        #     nn.LogSoftmax(dim=-1)
+        # )
         
     def forward(self, x):
         """
@@ -101,19 +102,19 @@ class TrashDetector(nn.Module):
             self.features.eval()
 
         # retrieve number of images
-        # n = x.size(0)
+        n = x.size(0)
         
-        # x, _ = self.features(x)
+        # x = self.features(x)
         # x = x.view(n, -1)
         # x = self.classifier(x)
 
-        x1 = self.features(x[:, :3])
-        x2 = self.features(x[:, 3:])
-        x = torch.cat([x1, x2], dim=1)
+        # x1 = self.features(x[:, :3])
+        # x2 = self.features(x[:, 3:])
+        # x = torch.cat([x1, x2], dim=1)
 
-        x = self.conv(x)
-        x = x.view(x.size(0), -1)
-        x = self.classifier(x)
+        # x = self.conv(x)
+        # x = x.view(x.size(0), -1)
+        # x = self.classifier(x)
 
         return x
         

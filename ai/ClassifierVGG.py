@@ -12,6 +12,7 @@ class ClassifierVGG(nn.Module):
         self.features = FeatureVGG()
         self.features.requires_grad_(fine_tune)
         self.features.eval()
+        self.fine_tune = fine_tune
 
         # self.lstm = nn.LSTM(
         #     4*4*1024,
@@ -56,6 +57,8 @@ class ClassifierVGG(nn.Module):
         print("Classifier VGG was loaded.")
 
     def forward(self, x):
+        if self.fine_tune is False:
+            self.features.eval()
 
         x = self.features(x)
 

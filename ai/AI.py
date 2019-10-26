@@ -22,9 +22,9 @@ class AI():
         print("Building AI module...")
         # self.classifier = Classifier().cuda()
         self.classifier = ClassifierVGG().cuda()
-        self.classifier.load(VGG_CLF_CKPT_PATH)
+        self.classifier.load("./ai/ckpts_final/clf_vgg.pth")
         self.detector = TrashDetector().cuda()
-        self.detector.load(DET_CKPT_PATH)
+        self.detector.load("./ai/ckpts_final/det.pth")
 
         self.classifier.eval()
         self.detector.eval()

@@ -7,14 +7,17 @@ from env import *
 from ai.DataLoader import DataLoader
 
 
+ETA = 1e-4
+EPOCHS = 10
+
 def main():
     train_loader = DataLoader(TRASH_TRAIN_DATA_PATH, TRASH_CAT, noise=True)
     valid_loader = DataLoader(TRASH_VALID_DATA_PATH, TRASH_CAT, noise=True)
 
-    model = ClassifierVGG().cuda()
+    model = ClassifierVGG(fine_tune=False).cuda()
     model.load(VGG_CLF_CKPT_PATH)
 
-    optimizer = optim.Adam(model.parameters(), lr=1e-3)
+    optimizer = optim.Adam(model.parameters(), lr=ETA)
     criterion = nn.NLLLoss()
 
     top_valid_acc = 0.0

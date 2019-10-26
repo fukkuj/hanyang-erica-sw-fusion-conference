@@ -9,14 +9,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from ai.FeatureCNN import FeatureCNN
-from ai.DataLoader2 import DataLoader
+from ai.DataLoader import DataLoader
 from env import *
 
 ETA = 1e-3
-EPOCHS = 50
+EPOCHS = 100
 
-train_dloader = DataLoader(TRASH_DATA_ALL_PATH, TRASH_CAT, noise=True)
-#valid_dloader = DataLoader(VALID_DATA_PATH, TRASH_CAT, noise=True)
+train_dloader = DataLoader(TRASH_TRAIN_DATA_PATH, TRASH_CAT, noise=True)
+valid_dloader = DataLoader(TRASH_VALID_DATA_PATH, TRASH_CAT, noise=True)
 
 model = FeatureCNN()
 #model.load(CNN_CKPT_PATH)
@@ -54,7 +54,6 @@ for e in range(EPOCHS):
         optimizer.step()
     
     if (e+1) % 10 == 0:
-        '''
         valid_loss = 0.0
         valid_clf_acc = 0.0
         
@@ -76,24 +75,24 @@ for e in range(EPOCHS):
         
                 loss = criterion(logps, y_batch)
                 valid_loss += loss.item()
-        '''
+                
         train_loss /= len(train_dloader)
         train_clf_acc /= len(train_dloader)
-        # valid_loss /= len(valid_dloader)
-        # valid_clf_acc /= len(valid_dloader)
+        valid_loss /= len(valid_dloader)
+        valid_clf_acc /= len(valid_dloader)
 
         print(f"Epochs: {e+1}/{EPOCHS}")
         print(f"Train loss: {train_loss:.8f}")
         print(f"Train acc: {train_clf_acc:.8f}")
-        # print(f"Valid loss: {valid_loss:.8f}")
-        # print(f"Valid acc: {valid_clf_acc:.8f}")
+        print(f"Valid loss: {valid_loss:.8f}")
+        print(f"Valid acc: {valid_clf_acc:.8f}")
             
-        # if top_valid_acc < valid_clf_acc:
-        #     top_valid_acc = valid_clf_acc
-        #     model.module.save(CNN_CKPT_PATH)
+        if top_valid_acc < valid_clf_acc:
+            top_valid_acc = valid_clf_acc
+            model.module.save(CNN_CKPT_PATH)
 
         model.train()
         
-model.module.save(CNN_CKPT_PATH)
+# model.module.save(CNN_CKPT_PATH)
 
 # print(torch.cuda.is_available())
