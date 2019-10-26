@@ -75,10 +75,17 @@ void StepperMotor::moveBoxMotor(int dir, int step)
 	for (; i < step; i += 1) {
 		digitalWrite(BOX_LEFT_MOTOR_CLK, HIGH);
 		digitalWrite(BOX_RIGHT_MOTOR_CLK, HIGH);
+<<<<<<< HEAD
 		delayMicroseconds(box_motor_clock);
 		digitalWrite(BOX_LEFT_MOTOR_CLK, LOW);
 		digitalWrite(BOX_RIGHT_MOTOR_CLK, LOW);
 		delayMicroseconds(box_motor_clock);
+=======
+		delayMicroseconds(motor_clock);
+		digitalWrite(BOX_LEFT_MOTOR_CLK, LOW);
+		digitalWrite(BOX_RIGHT_MOTOR_CLK, LOW);
+		delayMicroseconds(motor_clock);
+>>>>>>> 58571d3647cc66d15aef7a657f1292ee4f22a7e2
 	}
 
 	digitalWrite(BOX_MOTOR_ENABLE, LOW);
@@ -102,10 +109,17 @@ void StepperMotor::moveSupportMotor(int dir, int step)
 	for (; i < step; i += 1) {
 		digitalWrite(SUPPORT_LEFT_MOTOR_CLK, HIGH);
 		digitalWrite(SUPPORT_RIGHT_MOTOR_CLK, HIGH);
+<<<<<<< HEAD
 		delayMicroseconds(support_motor_clock);
 		digitalWrite(SUPPORT_LEFT_MOTOR_CLK, LOW);
 		digitalWrite(SUPPORT_RIGHT_MOTOR_CLK, LOW);
 		delayMicroseconds(support_motor_clock);
+=======
+		delayMicroseconds(motor_clock);
+		digitalWrite(SUPPORT_LEFT_MOTOR_CLK, LOW);
+		digitalWrite(SUPPORT_RIGHT_MOTOR_CLK, LOW);
+		delayMicroseconds(motor_clock);
+>>>>>>> 58571d3647cc66d15aef7a657f1292ee4f22a7e2
 	}
 
 	digitalWrite(SUPPORT_MOTOR_ENABLE, LOW);

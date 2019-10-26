@@ -1,7 +1,8 @@
 import torch
 import numpy as np
 
-from ai.TrashClassifier import TrashClassifier
+from ai.Classifier import Classifier
+from ai.ClassifierVGG import ClassifierVGG
 from ai.TrashDetector import TrashDetector
 from env import *
 
@@ -19,10 +20,14 @@ class AI():
     def build(self):
 
         print("Building AI module...")
-        self.classifier = TrashClassifier().cuda()
-        self.classifier.load(AE_CLF_CKPT_PATH)
+        # self.classifier = Classifier().cuda()
+        self.classifier = ClassifierVGG().cuda()
+        self.classifier.load(VGG_CLF_CKPT_PATH)
         self.detector = TrashDetector().cuda()
         self.detector.load(DET_CKPT_PATH)
+
+        self.classifier.eval()
+        self.detector.eval()
 
         if torch.cuda.is_available():
             if torch.cuda.device_count() > 1:
@@ -40,7 +45,7 @@ class AI():
         """
         Arguments:
         ----------
-        :x images, shaped of (1, 8, 3, HEIGHT, WIDTH)
+        :x images, shaped of (1, 8, 6, HEIGHT, WIDTH)
         """
 
         with torch.no_grad():
@@ -60,9 +65,10 @@ class AI():
         logps = self.detector(x)
         ps = torch.exp(logps)
 
+        print(ps.size())
         print(ps)
         
-        ratio = ps[:, 1] > 0.30
+        ratio = ps[:, 1] > 0.8
         ratio = torch.mean(ratio.type(torch.FloatTensor))
         
         # if 6 or more pictures have trash,

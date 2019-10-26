@@ -1,9 +1,14 @@
 **/__pycache__/
 **/ckpts/
+**/ckpts*
 **/data/
 **/.vscode/
 **/.ipynb_checkpoints/
-data/*
+data/
+**/data*/
+data_all/
 **/test
 **/CMakeLists.txt
 **/package.xml
+**/data/
+**/data*/
