@@ -36,51 +36,25 @@ def motor_control(result, control_queue):
     if result == -1:
         return
     elif result == 0:
-<<<<<<< HEAD
         control_queue.append([BOX_MOTOR, 1, 1775])
-        control_queue.append([SUPPORT_MOTOR, 0, 2000])
-        control_queue.append([SUPPORT_MOTOR, 1, 2020])
-        control_queue.append([BOX_MOTOR, 0, 1760])
+        control_queue.append([SUPPORT_MOTOR, 0, 1600])
+        control_queue.append([SUPPORT_MOTOR, 1, 1620])
+        control_queue.append([BOX_MOTOR, 0, 1770])
     elif result == 1:
         control_queue.append([BOX_MOTOR, 1, 950])
-        control_queue.append([SUPPORT_MOTOR, 0, 2000])
-        control_queue.append([SUPPORT_MOTOR, 1, 2020])
-        control_queue.append([BOX_MOTOR, 0, 950])
+        control_queue.append([SUPPORT_MOTOR, 0, 1600])
+        control_queue.append([SUPPORT_MOTOR, 1, 1620])
+        control_queue.append([BOX_MOTOR, 0, 960])
     elif result == 2:
         control_queue.append([BOX_MOTOR, 0, 950])
-        control_queue.append([SUPPORT_MOTOR, 0, 2000])
-        control_queue.append([SUPPORT_MOTOR, 1, 2020])
-        control_queue.append([BOX_MOTOR, 1, 950])
+        control_queue.append([SUPPORT_MOTOR, 0, 1600])
+        control_queue.append([SUPPORT_MOTOR, 1, 1620])
+        control_queue.append([BOX_MOTOR, 1, 940])
     elif result == 3:
         control_queue.append([BOX_MOTOR, 0, 1820])
-        control_queue.append([SUPPORT_MOTOR, 0, 2000])
-        control_queue.append([SUPPORT_MOTOR, 1, 2020])
-        control_queue.append([BOX_MOTOR, 1, 1795])
-=======
-        return
-        control_queue.append([BOX_MOTOR, 1, 1650])
-        control_queue.append([SUPPORT_MOTOR, 0, 2000])
-        control_queue.append([SUPPORT_MOTOR, 1, 2020])
-        control_queue.append([BOX_MOTOR, 0, 1700])
-    elif result == 1:
-        return
-        control_queue.append([BOX_MOTOR, 1, 950])
-        control_queue.append([SUPPORT_MOTOR, 0, 2000])
-        control_queue.append([SUPPORT_MOTOR, 1, 2020])
-        control_queue.append([BOX_MOTOR, 0, 1000])
-    elif result == 2:
-        return
-        control_queue.append([BOX_MOTOR, 0, 950])
-        control_queue.append([SUPPORT_MOTOR, 0, 2000])
-        control_queue.append([SUPPORT_MOTOR, 1, 2020])
-        control_queue.append([BOX_MOTOR, 1, 900])
-    elif result == 3:
-        return
-        control_queue.append([BOX_MOTOR, 0, 1750])
-        control_queue.append([SUPPORT_MOTOR, 0, 2000])
-        control_queue.append([SUPPORT_MOTOR, 1, 2020])
-        control_queue.append([BOX_MOTOR, 1, 1700])
->>>>>>> 58571d3647cc66d15aef7a657f1292ee4f22a7e2
+        control_queue.append([SUPPORT_MOTOR, 0, 1600])
+        control_queue.append([SUPPORT_MOTOR, 1, 1620])
+        control_queue.append([BOX_MOTOR, 1, 1785])
     else:
         rospy.loginfo("INVALID result " + str(result))
         return
