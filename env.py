@@ -1,6 +1,6 @@
 # data path
-TRAIN_DATA_PATH = "./data/trash_collecting/train"
-VALID_DATA_PATH = "./data/trash_collecting/valid"
+TRAIN_DATA_PATH = "./data/trash_collecting/train_aug"
+VALID_DATA_PATH = "./data/trash_collecting/valid_aug"
 TRASH_TRAIN_DATA_PATH = "./data/trash/train"
 TRASH_VALID_DATA_PATH = "./data/trash/valid"
 DETECTOR_TRAIN_DATA_PATH = "./data/detector/train"
@@ -10,12 +10,14 @@ TRASH_DATA_ALL_PATH = "./data/trash_collecting_all"
 AE_CKPT_PATH = "./ai/ckpts/ae.pth"
 CNN_CKPT_PATH = "./ai/ckpts/fcnn.pth"
 CNN_CLF_CKPT_PATH = "./ai/ckpts/clf_cnn.pth"
-VGG_CLF_CKPT_PATH = "./ai/ckpts/clf_vgg.pth"
 AE_CLF_CKPT_PATH = "./ai/ckpts/clf_ae.pth"
 DET_CKPT_PATH = "./ai/ckpts/det.pth"
+VGG_CLF_CKPT_PATH = "./ai/ckpts_vgg/clf_vgg.pth"
+VGG_DET_CKPT_PATH = "./ai/ckpts_vgg/vgg_det.pth"
+VGG_CKPT_PATH = "./ai/ckpts_vgg/vgg.pth"
 
 # hyper parameters
-BATCH_SIZE = 8
+BATCH_SIZE = 16
 # BATCH_SIZE = 6
 ETA = 1e-3
 EPOCHS = 100

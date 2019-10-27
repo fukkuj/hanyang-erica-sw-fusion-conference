@@ -22,10 +22,11 @@ def main():
 
     top_valid_acc = 0.0
 
-    train_loss = 0.0
-    train_acc = 0.0
-
     for e in range(EPOCHS):
+
+        train_loss = 0.0
+        train_acc = 0.0
+        
         for x, y in train_loader.next_batch():
             x = torch.FloatTensor(x).cuda()
             y = torch.LongTensor(y).cuda()

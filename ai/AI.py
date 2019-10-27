@@ -3,7 +3,7 @@ import numpy as np
 
 from ai.Classifier import Classifier
 from ai.ClassifierVGG import ClassifierVGG
-from ai.TrashDetector import TrashDetector
+from ai.TrashDetectorVGG import TrashDetector
 from env import *
 
 
@@ -21,10 +21,10 @@ class AI():
 
         print("Building AI module...")
         # self.classifier = Classifier().cuda()
-        self.classifier = ClassifierVGG().cuda()
-        self.classifier.load(VGG_CLF_CKPT_PATH)
-        self.detector = TrashDetector().cuda()
-        self.detector.load(DET_CKPT_PATH)
+        self.classifier = ClassifierVGG(fine_tune=False).cuda()
+        self.classifier.load("ai/ckpts_vgg/clf_vgg.pth")
+        self.detector = TrashDetector(fine_tune=False).cuda()
+        self.detector.load("ai/ckpts_vgg/vgg_det.pth")
 
         self.classifier.eval()
         self.detector.eval()
@@ -68,7 +68,7 @@ class AI():
         print(ps.size())
         print(ps)
         
-        ratio = ps[:, 1] > 0.8
+        ratio = ps[:, 1] > 0.95
         ratio = torch.mean(ratio.type(torch.FloatTensor))
         
         # if 6 or more pictures have trash,
