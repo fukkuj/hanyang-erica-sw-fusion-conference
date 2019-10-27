@@ -2,6 +2,7 @@ import torch
 from torch import nn
 from ai.FeatureVGG import FeatureVGG
 import numpy as np
+from env import *
 
 
 class ClassifierVGG(nn.Module):
@@ -11,6 +12,7 @@ class ClassifierVGG(nn.Module):
 
         self.features = FeatureVGG()
         self.features.requires_grad_(fine_tune)
+        self.features.load(VGG_CKPT_PATH)
         self.features.eval()
         self.fine_tune = fine_tune
 
@@ -60,7 +62,7 @@ class ClassifierVGG(nn.Module):
         if self.fine_tune is False:
             self.features.eval()
 
-        x = self.features(x)
+        x, _, _, _ = self.features(x)
 
         # res_out, res_hidden = self.lstm(x)
         # res_out = res_out.contiguous()
