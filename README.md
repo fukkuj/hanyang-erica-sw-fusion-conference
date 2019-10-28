@@ -32,7 +32,7 @@
 ## 사용법
 하드웨어가 세팅되어 있다면,
 1. GCP에서 ```run_server.py``` 실행
-2. 라즈베리파이에서 ```roscore```, ```rosrun usb_camera usb_camera_node```, ```rosrun client_controller Main.py```, ```rosrun stepper_motor stepper_motor_node```를 차례로 실행한다.
+2. 라즈베리파이에서 ```roslaunch ai_recycling_bins launch.launch```를 실행한다.
 
 ## 참조
 초음파 센서 코드: https://github.com/OmarAflak/HC-SR04-Raspberry-Pi-C-
