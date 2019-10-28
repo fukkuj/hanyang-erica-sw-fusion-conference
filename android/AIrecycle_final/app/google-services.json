@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1088654693810",
+    "firebase_url": "https://aitrashcan.firebaseio.com",
+    "project_id": "aitrashcan",
+    "storage_bucket": "aitrashcan.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1088654693810:android:453e52bad8a2f291ab80ab",
+        "android_client_info": {
+          "package_name": "com.example.airecycle"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1088654693810-ecmnuj4ar2622id613gido2bjg5nk7ad.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.airecycle",
+            "certificate_hash": "36b61c224e5b5902f57a674c6d8c6ad04f0cc8b1"
+          }
+        },
+        {
+          "client_id": "1088654693810-i484e312bshcu0trof5oh4k11s823l8g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDKnCmWs9PH3CL1JIEVi5ZnqmkiqWaeIEs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1088654693810-i484e312bshcu0trof5oh4k11s823l8g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
