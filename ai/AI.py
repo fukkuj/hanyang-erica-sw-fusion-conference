@@ -1,7 +1,6 @@
 import torch
 import numpy as np
 
-from ai.Classifier import Classifier
 from ai.ClassifierVGG import ClassifierVGG
 from ai.TrashDetectorVGG import TrashDetector
 from env import *
