@@ -1,8 +1,15 @@
 package com.example.airecycle;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationBuilderWithBuilderAccessor;
+import androidx.core.app.NotificationCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.github.mikephil.charting.charts.BarChart;
@@ -117,7 +124,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         RecyclerViewAdapter adapter = new RecyclerViewAdapter(list) ;
         recyclerView.setAdapter(adapter) ;
 
-
         try {
             UpdateThread updateThread = new UpdateThread(barChart, entries);
             new Thread(updateThread).start();
@@ -128,16 +134,59 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             exc.printStackTrace();
         }
 
-        int[] colors = new int[4];
+        new Thread(() -> {
+            NotificationManager notificationManager= (NotificationManager) MainActivity.this.getSystemService(MainActivity.this.NOTIFICATION_SERVICE);
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "33")
+                    .setSmallIcon(R.drawable.badge_full)
+                    .setContentTitle("쓰레기통을 확인해주세요!")
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
-        for (int i = 0; i < 4; i += 1) {
-            if (entries.get(i).getY() >= 75)
-                colors[i] = Color.parseColor("#CA957B");
-            else
-                colors[i] = Color.parseColor("#6A655B");
-        }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                NotificationChannel channel = new NotificationChannel("33", "notChannel", NotificationManager.IMPORTANCE_DEFAULT);
+                notificationManager.createNotificationChannel(channel);
+            }
 
-        barDataSet.setColors(colors);
+            int[] colors = new int[4];
+            String[] cats = {"캔", "유리", "종이", "플라스틱"};
+
+            boolean notify = false;
+            boolean on_notification = false;
+
+            while (true) {
+                StringBuilder notificationContent = new StringBuilder();
+
+                int cnt = 0;
+                for (int i = 0; i < 4; i += 1) {
+                    if (entries.get(i).getY() >= 75) {
+                        colors[i] = Color.parseColor("#CA957B");
+                        notificationContent.append(cats[i] + " ");
+                        notify = true;
+                        cnt += 1;
+                    } else {
+                        colors[i] = Color.parseColor("#6A655B");
+                    }
+                }
+                if (cnt == 0) {
+                    notify = false;
+                    on_notification = false;
+                }
+
+                barDataSet.setColors(colors);
+
+                if (notify && !on_notification) {
+                    builder.setSmallIcon(R.drawable.badge_full).setContentTitle("쓰레기통을 확인해주세요!")
+                            .setTicker("쓰레기통을 확인해주세요!")
+                            .setNumber(1)
+                            .setWhen(System.currentTimeMillis());
+                    builder.setContentText(notificationContent);
+                    notificationManager.notify(1, builder.build());
+                    on_notification = true;
+                }
+
+                Thread.yield();
+            }
+        }).start();
+
 
     }
 
