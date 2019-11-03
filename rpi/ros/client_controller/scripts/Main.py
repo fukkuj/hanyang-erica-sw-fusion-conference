@@ -36,24 +36,24 @@ def motor_control(result, control_queue):
     if result == -1:
         return
     elif result == 0:
-        control_queue.append([BOX_MOTOR, 1, 1770])
+        control_queue.append([BOX_MOTOR, 1, 1800])
         control_queue.append([SUPPORT_MOTOR, 0, 1800])
-        control_queue.append([SUPPORT_MOTOR, 1, 1820])
-        control_queue.append([BOX_MOTOR, 0, 1800])
+        control_queue.append([SUPPORT_MOTOR, 1, 1810])
+        control_queue.append([BOX_MOTOR, 0, 1780])
     elif result == 1:
         control_queue.append([BOX_MOTOR, 1, 850])
         control_queue.append([SUPPORT_MOTOR, 0, 1800])
-        control_queue.append([SUPPORT_MOTOR, 1, 1820])
+        control_queue.append([SUPPORT_MOTOR, 1, 1810])
         control_queue.append([BOX_MOTOR, 0, 860])
     elif result == 2:
         control_queue.append([BOX_MOTOR, 0, 850])
         control_queue.append([SUPPORT_MOTOR, 0, 1800])
-        control_queue.append([SUPPORT_MOTOR, 1, 1820])
+        control_queue.append([SUPPORT_MOTOR, 1, 1810])
         control_queue.append([BOX_MOTOR, 1, 820])
     elif result == 3:
         control_queue.append([BOX_MOTOR, 0, 1820])
         control_queue.append([SUPPORT_MOTOR, 0, 1800])
-        control_queue.append([SUPPORT_MOTOR, 1, 1820])
+        control_queue.append([SUPPORT_MOTOR, 1, 1810])
         control_queue.append([BOX_MOTOR, 1, 1755])
     else:
         rospy.loginfo("INVALID result " + str(result))
