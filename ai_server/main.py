@@ -119,6 +119,8 @@ def main(args):
         print(e)
         print("Exception occurs. Server shutdown.")
     
+    except OSError as e:
+        pass
 
     server.close()
     ok = False
