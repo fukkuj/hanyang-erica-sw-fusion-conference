@@ -9,10 +9,10 @@ import sys
 import threading as th
 import time
 
-#HOST =  "35.229.136.239"
+HOST =  "35.229.136.239"
 #HOST =  "35.236.168.202"
 #HOST = "34.80.12.180"
-HOST = "192.168.43.150"
+#HOST = "192.168.43.150"
 PORT = 13333
 NUM_STEP = 8
 
@@ -36,25 +36,25 @@ def motor_control(result, control_queue):
     if result == -1:
         return
     elif result == 0:
-        control_queue.append([BOX_MOTOR, 1, 1775])
-        control_queue.append([SUPPORT_MOTOR, 0, 1600])
-        control_queue.append([SUPPORT_MOTOR, 1, 1620])
-        control_queue.append([BOX_MOTOR, 0, 1770])
+        control_queue.append([BOX_MOTOR, 1, 1770])
+        control_queue.append([SUPPORT_MOTOR, 0, 1800])
+        control_queue.append([SUPPORT_MOTOR, 1, 1820])
+        control_queue.append([BOX_MOTOR, 0, 1800])
     elif result == 1:
-        control_queue.append([BOX_MOTOR, 1, 950])
-        control_queue.append([SUPPORT_MOTOR, 0, 1600])
-        control_queue.append([SUPPORT_MOTOR, 1, 1620])
-        control_queue.append([BOX_MOTOR, 0, 960])
+        control_queue.append([BOX_MOTOR, 1, 850])
+        control_queue.append([SUPPORT_MOTOR, 0, 1800])
+        control_queue.append([SUPPORT_MOTOR, 1, 1820])
+        control_queue.append([BOX_MOTOR, 0, 860])
     elif result == 2:
-        control_queue.append([BOX_MOTOR, 0, 950])
-        control_queue.append([SUPPORT_MOTOR, 0, 1600])
-        control_queue.append([SUPPORT_MOTOR, 1, 1620])
-        control_queue.append([BOX_MOTOR, 1, 940])
+        control_queue.append([BOX_MOTOR, 0, 850])
+        control_queue.append([SUPPORT_MOTOR, 0, 1800])
+        control_queue.append([SUPPORT_MOTOR, 1, 1820])
+        control_queue.append([BOX_MOTOR, 1, 820])
     elif result == 3:
         control_queue.append([BOX_MOTOR, 0, 1820])
-        control_queue.append([SUPPORT_MOTOR, 0, 1600])
-        control_queue.append([SUPPORT_MOTOR, 1, 1620])
-        control_queue.append([BOX_MOTOR, 1, 1785])
+        control_queue.append([SUPPORT_MOTOR, 0, 1800])
+        control_queue.append([SUPPORT_MOTOR, 1, 1820])
+        control_queue.append([BOX_MOTOR, 1, 1755])
     else:
         rospy.loginfo("INVALID result " + str(result))
         return
