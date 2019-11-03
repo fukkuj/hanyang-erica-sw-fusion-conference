@@ -34,5 +34,8 @@
 1. GCP에서 ```run_server.py``` 실행
 2. 라즈베리파이에서 ```roslaunch ai_recycling_bins launch.launch```를 실행한다.
 
+## DEMO
+https://www.notion.so/wayexists/SW-ICT-Conference-35aa01d66e5b43b5971091dc787eb39a
+
 ## 참조
 초음파 센서 코드: https://github.com/OmarAflak/HC-SR04-Raspberry-Pi-C-
